@@ -2,10 +2,10 @@ import React from "react";
 
 // We import bootstrap to make our application look better.
 import "bootstrap/dist/css/bootstrap.css";
-import { Nav, Navbar, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import { Nav, Navbar } from 'react-bootstrap';
 
 // We import NavLink to utilize the react router.
-import { NavLink } from "react-router-dom";
+// ddadawaaddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddaaaaaaaaaaaaaaaaaaaaaawwwwwwwwwwwwwwwwwwwdddddaaaaaaaaaaaaaaaaaaawdwwwwwwwwwwwwAaaaaaaaaaaasdwwwwwwwwwwwwwwddswwwwwwww
 
 // Here, we display our Navbar
 export default function Navigationbar() {

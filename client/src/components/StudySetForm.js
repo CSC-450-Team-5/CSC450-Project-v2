@@ -78,6 +78,7 @@ const QuestionForm = (props) => {
 function StudySetForm() {
     const [questionList, setQuestionList] = useState([]);
     const [getQuestionID, setQuestionID] = useState(0);
+    const [skipQuestionIds, setSkipQuestionIds] = useState([]);
 
     const onAddQuestionBtnClick = event => {
         event.preventDefault();
@@ -101,6 +102,7 @@ function StudySetForm() {
         const id = parseInt(event.target.id);
         //console.log('attempting to delete question id: ' + id);
         setQuestionList(questionList => questionList.filter(question => question.props.qid !== id));
+        setSkipQuestionIds(skipQuestionIds.concat(id));
     };
 
     const handleSubmit = (event) => {
@@ -115,6 +117,11 @@ function StudySetForm() {
 
         // Loop through each question in questionList and extract data
         for (let i = 0; i < getQuestionID; i++) {
+            // Skip question if it has been removed
+            if (skipQuestionIds.includes(i)) {
+                continue;
+            }
+
             const questionTitle = document.getElementById('QuestionTitle' + i).value;
             const question = document.getElementById('Question' + i).value;
             const answers = [];

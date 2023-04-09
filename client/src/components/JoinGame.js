@@ -9,7 +9,7 @@ export default function JoinGame() {
                         <input type="text" className="form-control mb-2" id="gameCode" placeholder="Enter game code" />
                         <label htmlFor="playerName" className="float-left">Player Name</label>
                         <input type="text" className="form-control mb-4" id="playerName" placeholder="Enter player name" />
-                        <button type="submit" className="btn btn-primary col-12">Submit</button>
+                        <button type="submit" className="btn btn-primary col-12">Join Game</button>
                     </div>
                 </div>
             </form>
