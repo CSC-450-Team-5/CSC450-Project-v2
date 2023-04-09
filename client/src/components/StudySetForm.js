@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 
+import "bootstrap/dist/css/bootstrap.min.css";
 
+const QuestionForm = (props) => {
 
-
-const QuestionForm = () => {
     return <>
         <div className="border rounded p-2">
             {/* Question title row */}
             <div className="row">
                 <div className="col-6 mb-2">
-                    <label htmlFor="QuestionTitle" className="float-left">Question Title</label>
-                    <input type="text" className="form-control" id="QuestionTitle" placeholder="Enter Question title" />
+                    <label htmlFor={'QuestionTitle' + props.qid} className="float-left">Question Title</label>
+                    <input type="text" className="form-control" id={'QuestionTitle' + props.qid} placeholder="Enter Question title" />
                 </div>
             </div>
             {/* Question row */}
             <div className="row">
                 <div className="col mb-2">
-                    <label htmlFor="Question" className="float-left">Question</label>
-                    <input type="text" className="form-control" id="Question" placeholder="Enter Question" />
+                    <label htmlFor={'Question' + props.qid} className="float-left">Question</label>
+                    <input type="text" className="form-control" id={'Question' + props.qid} placeholder="Enter Question" />
                 </div >
             </div>
             {/* Question answers row labels*/}
@@ -32,41 +32,41 @@ const QuestionForm = () => {
             {/* Question answers row inputs*/}
             <div className="row">
                 <div className="col-10">
-                    <input type="text" className="form-control mb-1" id="QuestionAnswer1" placeholder="Enter Question answer" />
+                    <input type="text" className="form-control mb-1" id={'QuestionAnswer1,' + props.qid} placeholder="Enter Question answer" />
                 </div>
                 <div className="col-2">
                     <div className="form-check">
-                        <input className="form-check-input" type="radio" name="gridRadios" value="option1" />
+                        <input className="form-check-input" type="radio" name={'gridRadios' + props.qid} value="option1" />
                     </div>
                 </div>
             </div>
             <div className="row">
                 <div className="col-10">
-                    <input type="text" className="form-control mb-1" id="QuestionAnswer2" placeholder="Enter Question answer" />
+                    <input type="text" className="form-control mb-1" id={'QuestionAnswer2,' + props.qid} placeholder="Enter Question answer" />
                 </div>
                 <div className="col-2">
                     <div className="form-check">
-                        <input className="form-check-input" type="radio" name="gridRadios" value="option2" />
+                        <input className="form-check-input" type="radio" name={'gridRadios' + props.qid} value="option2" />
                     </div>
                 </div>
             </div>
             <div className="row">
                 <div className="col-10">
-                    <input type="text" className="form-control mb-1" id="QuestionAnswer3" placeholder="Enter Question answer" />
+                    <input type="text" className="form-control mb-1" id={'QuestionAnswer3,' + props.qid} placeholder="Enter Question answer" />
                 </div>
                 <div className="col-2">
                     <div className="form-check">
-                        <input className="form-check-input" type="radio" name="gridRadios" value="option3" />
+                        <input className="form-check-input" type="radio" name={'gridRadios' + props.qid} value="option3" />
                     </div>
                 </div>
             </div>
             <div className="row">
                 <div className="col-10">
-                    <input type="text" className="form-control mb-1" id="QuestionAnswer4" placeholder="Enter Question answer" />
+                    <input type="text" className="form-control mb-1" id={'QuestionAnswer4,' + props.qid} placeholder="Enter Question answer" />
                 </div>
                 <div className="col-2">
                     <div className="form-check">
-                        <input className="form-check-input" type="radio" name="gridRadios" value="option4" />
+                        <input className="form-check-input" type="radio" name={'gridRadios' + props.qid} value="option4" />
                     </div>
                 </div>
             </div>
@@ -77,17 +77,90 @@ const QuestionForm = () => {
 
 
 function StudySetForm() {
-    const [inputList, setInputList] = useState([]);
+    const [questionList, setQuestionList] = useState([]);
+    //counter for question id
+    const [getQuestionID, setQuestionID] = useState(0);
 
     const onAddQuestionBtnClick = event => {
         event.preventDefault();
-        setInputList(inputList.concat(<QuestionForm key={inputList.length} />));
+        setQuestionList(questionList.concat(<QuestionForm qid={getQuestionID} key={questionList.length} />));
+        setQuestionID(getQuestionID + 1);
+    };
+
+    const getCorrectAnswerStringFromQNum = (qid) => {
+        const radioButtons = document.getElementsByName('gridRadios' + qid);
+        let correctAnswerNumber = 1;
+        for (let i = 0; i < radioButtons.length; i++) {
+            if (radioButtons[i].checked) {
+                correctAnswerNumber = i + 1;
+            }
+        }
+        return 'QuestionAnswer' + correctAnswerNumber + ',' + qid;
+    };
+
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+
+        // Get title and description from form inputs
+        const setTitle = document.getElementById('setTitle').value;
+        const description = document.getElementById('description').value;
+
+        // Create an array to hold questions
+        const questions = [];
+
+        // Loop through each question in questionList and extract data
+        for (let i = 0; i < getQuestionID; i++) {
+            const questionTitle = document.getElementById('QuestionTitle' + i).value;
+            const question = document.getElementById('Question' + i).value;
+            const answers = [];
+            for (let j = 1; j <= 4; j++) {
+                const answer = document.getElementById('QuestionAnswer' + j + ',' + i).value;
+                answers.push(answer);
+            }
+
+            // Get correct answer id string from questionData object
+            const correctAnswerId = getCorrectAnswerStringFromQNum(i);
+            const correctAnswer = document.getElementById(correctAnswerId).value;
+
+
+            // Create question object and add to questions array
+            const questionObj = {
+                questionTitle,
+                question,
+                answers,
+                correctAnswer
+            };
+            questions.push(questionObj);
+        }
+
+        // Create studySet object
+        const studySet = {
+            setTitle,
+            description,
+            creator_id: 1,
+            questions
+        };
+
+        // Log studySet object
+        console.log(JSON.stringify(studySet));
+
+        // Post studySet object to server
+        fetch('http://localhost:5000/studysets/addstudyset', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(studySet)
+        })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(err => console.log(JSON.stringify(err)));
+
     };
 
     return (
         <div className="StudySetForm bg-dark text-white p-3">
             <h1 className="mb-5">Add Study Set</h1>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <div className="row">
                     <div className="col-6 mb-3">
                         <label htmlFor="setTitle" className="float-left">Title</label>
@@ -102,7 +175,7 @@ function StudySetForm() {
                 </div>
 
                 <div className="form-group">
-                    {inputList}
+                    {questionList}
                     <button className="btn btn-success float-right mt-3" onClick={onAddQuestionBtnClick}>Add Question</button>
                 </div>
 
@@ -111,5 +184,6 @@ function StudySetForm() {
         </div>
     );
 }
+
 
 export default StudySetForm;

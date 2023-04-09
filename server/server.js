@@ -22,7 +22,7 @@ const userRouter = require('./routes/users');
 const studySetRouter = require('./routes/studysets');
 
 app.use('/users', userRouter);
-app.use('/study_sets', studySetRouter);
+app.use('/studysets', studySetRouter);
 
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);

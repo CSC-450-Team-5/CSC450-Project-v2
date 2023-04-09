@@ -9,7 +9,7 @@ const StudySetCard = (props) => {
             </div>
             <div className="card-body bg-secondary">
                 <p className="card-text">{studySet.description}</p>
-                <a href="javascript:void(0)" className="btn btn-primary">Go somewhere</a>
+                <a href="#" className="btn btn-primary">Go somewhere</a>
             </div>
         </div>
     );
@@ -18,24 +18,27 @@ const StudySetCard = (props) => {
 function StudySetCards() {
     //get the list of study sets
     const [studySets, setStudySets] = useState([]);
-    // useEffect(() => {
-    //     fetch('/api/studysets')
-    //         .then(response => response.json())
-    //         .then(data => setStudySets(data));
-    // }, []);
+    useEffect(() => {
+        fetch('http://localhost:5000/studysets/getStudySets')
+            .then(response => response.json())
+            .then(data => {
+                setStudySets(data);
+                // console.log(data);
+            })
+            .catch(err => console.log(err));
+    }, []);
 
-    //create cards based on study sets list
-    // const cards = studySets.map((studySet) =>
-    //     <StudySetCard key={studySet.id} studySet={studySet} />
-    // );
-
-    //add 5 cards for testing
     const cards = [];
-    for (let i = 0; i < 5; i++) {
-        cards.push(<StudySetCard key={i} studySet={{ name: "Study Set " + i, description: "Description " + i }} />);
+    for (let i = 0; i < studySets.length; i++) {
+        cards.push(<StudySetCard key={i} studySet={studySets[i]} />);
     }
 
-
+    // //add 5 cards for testing
+    // if (cards.length === 0) {
+    //     for (let i = 0; i < 5; i++) {
+    //         cards.push(<StudySetCard key={i} studySet={{ name: "Study Set " + i, description: "Description " + i }} />);
+    //     }
+    // }
 
     return (
         <div className="study-set-container bg-dark text-white p-3 px-5 container-fluid">
