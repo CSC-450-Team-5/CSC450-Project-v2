@@ -21,13 +21,11 @@ const QuestionForm = (props) => {
                 </div >
             </div>
             {/* Question answers row labels*/}
-
             <div className="row">
                 <div className="col-12">
                     <label htmlFor="QuestionAnswer" className="float-left">Question Answers</label>
                     <label htmlFor="QuestionAnswer" className="float-right">Correct Answer</label>
                 </div>
-
             </div>
             {/* Question answers row inputs*/}
             <div className="row">
@@ -70,6 +68,7 @@ const QuestionForm = (props) => {
                     </div>
                 </div>
             </div>
+            <button className="btn btn-danger float-right" id={props.qid} onClick={props.removeQuestion}>Remove Question</button>
         </div>
     </>;
 };
@@ -78,12 +77,11 @@ const QuestionForm = (props) => {
 
 function StudySetForm() {
     const [questionList, setQuestionList] = useState([]);
-    //counter for question id
     const [getQuestionID, setQuestionID] = useState(0);
 
     const onAddQuestionBtnClick = event => {
         event.preventDefault();
-        setQuestionList(questionList.concat(<QuestionForm qid={getQuestionID} key={questionList.length} />));
+        setQuestionList(questionList.concat(<QuestionForm qid={getQuestionID} key={questionList.length} removeQuestion={onRemoveQuestionBtnClick} />));
         setQuestionID(getQuestionID + 1);
     };
 
@@ -98,6 +96,12 @@ function StudySetForm() {
         return 'QuestionAnswer' + correctAnswerNumber + ',' + qid;
     };
 
+    const onRemoveQuestionBtnClick = event => {
+        event.preventDefault();
+        const id = parseInt(event.target.id);
+        //console.log('attempting to delete question id: ' + id);
+        setQuestionList(questionList => questionList.filter(question => question.props.qid !== id));
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -119,7 +123,7 @@ function StudySetForm() {
                 answers.push(answer);
             }
 
-            // Get correct answer id string from questionData object
+            // Get correct answer id string and get value from input
             const correctAnswerId = getCorrectAnswerStringFromQNum(i);
             const correctAnswer = document.getElementById(correctAnswerId).value;
 
