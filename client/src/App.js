@@ -8,6 +8,7 @@ import Navbar from "./components/navbar";
 import CreateStudySet from "./components/StudySetForm";
 import HomePage from "./components/HomePage";
 import StudySetCards from "./components/studySetCards";
+import Login from "./components/Login";
 
 const App = () => {
     return (
@@ -18,6 +19,7 @@ const App = () => {
                 {/* <Route path="/edit/:id" element={<Edit />} /> */}
                 <Route path="/createStudySet" element={<CreateStudySet />} />
                 <Route path="/viewStudySets" element={<StudySetCards />} />
+                <Route path="/login" element={<Login />} />
             </Routes>
         </div>
     );
