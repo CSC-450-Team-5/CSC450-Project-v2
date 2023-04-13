@@ -72,11 +72,11 @@ const Login = () => {
                 />
               </Form.Group>
               {/* Use a button component for the submit button */}
-              <Button type="submit" className="w-100 mt-3">Login</Button>
+              <Button type="submit" className="w-100 mt-3">Sign Up</Button>
             </Form>
             <div className="text-center mt-3">
               {/* Add a light text color to the link */}
-              <a href="/signup">Don't have an account? Sign up here</a>
+              <a href="/login">Already have an account? Log in</a>
             </div>
           </Card.Body>
         </Card>
