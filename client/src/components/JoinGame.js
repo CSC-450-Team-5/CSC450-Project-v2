@@ -6,9 +6,9 @@ export default function JoinGame() {
                     <div className="col-12 col-sm-8 col-md-6 mb-3 mx-auto border rounded p-2">
                         <h1 className="mb-2 text-center">Join Game</h1>
                         <label htmlFor="gameCode" className="float-left">Game Code</label>
-                        <input type="text" className="form-control mb-2" id="gameCode" placeholder="Enter game code" />
+                        <input type="text" className="form-control mb-1" id="gameCode" placeholder="Enter game code" />
                         <label htmlFor="playerName" className="float-left">Player Name</label>
-                        <input type="text" className="form-control mb-4" id="playerName" placeholder="Enter player name" />
+                        <input type="text" className="form-control mb-3" id="playerName" placeholder="Enter player name" />
                         <button type="submit" className="btn btn-primary col-12">Join Game</button>
                     </div>
                 </div>
