@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const StudySetCard = (props) => {
     const studySet = props.studySet;
@@ -9,7 +10,8 @@ const StudySetCard = (props) => {
             </div>
             <div className="card-body bg-secondary">
                 <p className="card-text">{studySet.description}</p>
-                <a href="#" className="btn btn-primary">Go somewhere</a>
+                <button variant="primary">  <Link to={'/SetDetails/' + studySet._id}>Open Study Set</Link> </button>
+
             </div>
         </div>
     );
