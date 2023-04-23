@@ -8,6 +8,8 @@ import Navbar from "./components/navbar";
 import CreateStudySet from "./components/StudySetForm";
 import HomePage from "./components/HomePage";
 import StudySetCards from "./components/studySetCards";
+import HostGameForm from "./components/HostGameForm";
+import HostLobby from "./components/HostLobby";
 import SetDetails from "./components/SetDetails";
 
 const App = () => {
@@ -16,9 +18,10 @@ const App = () => {
             <Navbar />
             <Routes>
                 <Route exact path="/" element={<HomePage />} />
-                {/* <Route path="/edit/:id" element={<Edit />} /> */}
+                <Route path="/hostgame" element={<HostGameForm />} />
                 <Route path="/createStudySet" element={<CreateStudySet />} />
                 <Route path="/viewStudySets" element={<StudySetCards />} />
+                <Route path="/hostlobby" element={<HostLobby />} />
                 <Route path="/SetDetails/:setID" element={<SetDetails />} />
             </Routes>
         </div>
