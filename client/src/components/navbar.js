@@ -40,6 +40,7 @@ export default function Navigationbar() {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
+                    <Nav.Link href="/hostgame">Host Game</Nav.Link>
                     <Nav.Link href="/viewStudySets">View Study Sets</Nav.Link>
                     <Nav.Link href="/createStudySet">Create Study Set</Nav.Link>
                 </Nav>

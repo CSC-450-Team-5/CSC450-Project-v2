@@ -8,6 +8,9 @@ import Navbar from "./components/navbar";
 import CreateStudySet from "./components/StudySetForm";
 import HomePage from "./components/HomePage";
 import StudySetCards from "./components/studySetCards";
+import HostGameForm from "./components/HostGameForm";
+import HostLobby from "./components/HostLobby";
+import SetDetails from "./components/SetDetails";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Logout from "./components/Logout";
@@ -26,8 +29,11 @@ const App = () => {
             { showNav && <Navbar /> }
             <Routes>
                 <Route exact path="/" element={<HomePage />} />
+                <Route path="/hostgame" element={<HostGameForm />} />
                 <Route path="/createStudySet" element={<CreateStudySet />} />
                 <Route path="/viewStudySets" element={<StudySetCards />} />
+                <Route path="/hostlobby" element={<HostLobby />} />
+                <Route path="/SetDetails/:setID" element={<SetDetails />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/logout" element={<Logout />} />
