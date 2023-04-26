@@ -11,22 +11,27 @@ import StudySetCards from "./components/studySetCards";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Logout from "./components/Logout";
+import UserPage from "./components/UserPage";
 
 const App = () => {
-    
-const { pathname } = useLocation();
+    const noNavRoutes = ["/signup", "/login"];
+
+    const { pathname } = useLocation();
+    var showNav = true;
+    if (noNavRoutes.some((item) => pathname.includes(item)))
+        showNav = false;
+
     return (
         <div>
-            { (pathname !== "/login" || pathname !== "/signup") && <Navbar /> }
+            { showNav && <Navbar /> }
             <Routes>
                 <Route exact path="/" element={<HomePage />} />
-                {/* <Route path="/edit/:id" element={<Edit />} /> */}
                 <Route path="/createStudySet" element={<CreateStudySet />} />
                 <Route path="/viewStudySets" element={<StudySetCards />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/logout" element={<Logout />} />
-
+                <Route path="/users/:id" element={<UserPage />} />
             </Routes>
         </div>
     );

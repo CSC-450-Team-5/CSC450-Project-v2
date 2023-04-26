@@ -10,7 +10,7 @@ router.route('/').get((req, res) => {
 });
 
 // Handles HTTP post requests to add users to db.
-router.route('/add').post((req, res) => {
+router.route('/signup').post((req, res) => {
     // List out each of our db fields and define what values they should hold.
     const username = req.body.username;
     const password = req.body.password;

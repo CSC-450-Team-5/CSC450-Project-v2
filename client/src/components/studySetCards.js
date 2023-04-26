@@ -9,7 +9,7 @@ const StudySetCard = (props) => {
             </div>
             <div className="card-body bg-secondary">
                 <p className="card-text">{studySet.description}</p>
-                <a href="#" className="btn btn-primary">Go somewhere</a>
+                <a href="`#/someurl?{studySet.id}`" className="btn btn-primary">Go somewhere</a>
             </div>
         </div>
     );

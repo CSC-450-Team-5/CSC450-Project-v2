@@ -16,7 +16,7 @@ const Login = () => {
 
     try {
       // Send a POST request to the server with the username and password
-      const response = await fetch('/server/database/login', {
+      const response = await fetch('http://localhost:5000/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })

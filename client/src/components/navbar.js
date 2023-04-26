@@ -45,9 +45,9 @@ export default function Navigationbar() {
                 </Nav>
             </Navbar.Collapse>
             
-            <Nav className="ml-auto">
+            {/* <Nav className="ml-auto">
                 <Button variant="outline-light" href="/logout">Logout</Button>
-            </Nav>
+            </Nav> */}
         </Navbar>
 
     );

@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 // Import react-bootstrap components
 import { Col, Button, Row, Container, Card, Form } from 'react-bootstrap';
+// import { useNavigate } from 'react-router-dom';
+import HomePage from "../components/HomePage";
+import { useNavigate } from 'react-router-dom';
+
 // Import a logo image
 // import logo from './logo.png';
 
@@ -8,6 +12,8 @@ const Login = () => {
   // Use state hooks for username and password
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
 
   // Define a function to handle form submission
   const handleSubmit = async (e) => {
@@ -16,7 +22,7 @@ const Login = () => {
 
     try {
       // Send a POST request to the server with the username and password
-      const response = await fetch('/server/database/login', {
+      const response = await fetch('http://localhost:5000/users/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
@@ -26,6 +32,8 @@ const Login = () => {
       const data = await response.json();
       // Log the data to the console
       console.log(data);
+      // useNavigate(HomePage)
+      navigate('/');
     } catch (error) {
       // Handle any errors
       console.error(error);
@@ -72,7 +80,7 @@ const Login = () => {
                 />
               </Form.Group>
               {/* Use a button component for the submit button */}
-              <Button type="submit" className="w-100 mt-3">Sign Up</Button>
+              <Button type="submit" className="w-100 mt-3">Create Account</Button>
             </Form>
             <div className="text-center mt-3">
               {/* Add a light text color to the link */}
