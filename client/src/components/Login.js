@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 // Import react-bootstrap components
 import { Col, Button, Row, Container, Card, Form } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+
 // Import a logo image
 // import logo from './logo.png';
 
@@ -8,6 +10,7 @@ const Login = () => {
   // Use state hooks for username and password
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   // Define a function to handle form submission
   const handleSubmit = async (e) => {
@@ -26,6 +29,7 @@ const Login = () => {
       const data = await response.json();
       // Log the data to the console
       console.log(data);
+      navigate('/');
     } catch (error) {
       // Handle any errors
       console.error(error);
