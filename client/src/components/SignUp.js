@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 // Import react-bootstrap components
 import { Col, Button, Row, Container, Card, Form } from 'react-bootstrap';
 // import { useNavigate } from 'react-router-dom';
-import HomePage from "../components/HomePage";
 import { useNavigate } from 'react-router-dom';
 
 // Import a logo image
@@ -22,7 +21,7 @@ const Login = () => {
 
     try {
       // Send a POST request to the server with the username and password
-      const response = await fetch('http://localhost:5000/users/signup', {
+      const response = await fetch('http://localhost:5000/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
