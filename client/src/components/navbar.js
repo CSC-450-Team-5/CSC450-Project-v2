@@ -2,7 +2,7 @@ import React from "react";
 
 // We import bootstrap to make our application look better.
 import "bootstrap/dist/css/bootstrap.css";
-import { Nav, Navbar } from 'react-bootstrap';
+import { Nav, Navbar, Button } from 'react-bootstrap';
 
 // We import NavLink to utilize the react router.
 // ddadawaaddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddaaaaaaaaaaaaaaaaaaaaaawwwwwwwwwwwwwwwwwwwdddddaaaaaaaaaaaaaaaaaaawdwwwwwwwwwwwwAaaaaaaaaaaasdwwwwwwwwwwwwwwddswwwwwwww
@@ -45,6 +45,10 @@ export default function Navigationbar() {
                     <Nav.Link href="/createStudySet">Create Study Set</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
+            
+            {/* <Nav className="ml-auto">
+                <Button variant="outline-light" href="/logout">Logout</Button>
+            </Nav> */}
         </Navbar>
 
     );
