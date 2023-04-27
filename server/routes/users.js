@@ -9,22 +9,6 @@ router.route('/').get((req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
-// Handles HTTP post requests to add users to db.
-router.route('/signup').post((req, res) => {
-    // List out each of our db fields and define what values they should hold.
-    const username = req.body.username;
-    const password = req.body.password;
-
-    const newUser = new User({
-        username,
-        password
-    });
-
-    newUser.save()
-        .then(() => res.json('User Added!'))
-        .catch(err => res.status(400).json('Error: ' + err));
-});
-
 // Handles HTTP get by id request
 router.route('/:id').get((req, res) => {
     User.findById(req.params.id)

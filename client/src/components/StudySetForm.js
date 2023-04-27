@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -79,6 +80,7 @@ function StudySetForm() {
     const [questionList, setQuestionList] = useState([]);
     const [getQuestionID, setQuestionID] = useState(0);
     const [skipQuestionIds, setSkipQuestionIds] = useState([]);
+    const navigate = useNavigate();
 
     const onAddQuestionBtnClick = event => {
         event.preventDefault();
@@ -165,6 +167,7 @@ function StudySetForm() {
             .then(response => response.json())
             .then(data => console.log(data))
             .catch(err => console.log(JSON.stringify(err)));
+        navigate('/viewStudySets');
 
     };
 
