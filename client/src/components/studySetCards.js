@@ -4,13 +4,14 @@ import { Link } from 'react-router-dom';
 const StudySetCard = (props) => {
     const studySet = props.studySet;
     return (
-        <div className="card col-12 col-md-4 p-0">
+        <div className="card col-12 col-md-4 p-1 bg-dark border bg-secondary">
+            
             <div className="card-header bg-dark">
                 {studySet.name}
             </div>
             <div className="card-body bg-secondary">
-                <p className="card-text">{studySet.description}</p>
-                <button variant="primary">  <Link to={'/SetDetails/' + studySet._id}>Open Study Set</Link> </button>
+                <p className="card-text" >{studySet.description}</p>
+                <button variant="primary stretched-link">  <Link to={'/SetDetails/' + studySet._id}>Open Study Set</Link> </button>
 
             </div>
         </div>
@@ -30,10 +31,12 @@ function StudySetCards() {
             .catch(err => console.log(err));
     }, []);
 
+
     const cards = [];
     for (let i = 0; i < studySets.length; i++) {
         cards.push(<StudySetCard key={i} studySet={studySets[i]} />);
     }
+    
 
     // //add 5 cards for testing
     // if (cards.length === 0) {
@@ -43,14 +46,18 @@ function StudySetCards() {
     // }
 
     return (
-        <div className="study-set-container bg-dark text-white p-3 px-5 container-fluid">
-            <div className="row">
-                <div className="col-12">
+        <div className="study-set-container bg-dark text-white p-2 px-5">
+            <div className="row-12 ">
+                <div className="col-12 p-3" >
                     <h1>Study Sets</h1>
                 </div>
             </div>
-            <div className="row">
-                {cards}
+            <div className='container-fluid'>
+              <div className="row-12" >
+                    <div className='col-12'>
+                         {cards} 
+                    </div>    
+                </div>
             </div>
         </div>
     );
