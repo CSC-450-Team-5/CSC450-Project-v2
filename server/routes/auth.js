@@ -37,10 +37,12 @@ router.route('/signup').post((req, res) => {
     // List out each of our db fields and define what values they should hold.
     const username = req.body.username;
     const password = req.body.password;
+    const PIs = [];
 
     const newUser = new User({
         username,
-        password
+        password,
+        PIs
     });
 
     newUser.save()
