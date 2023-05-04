@@ -8,7 +8,7 @@ import Navbar from "./components/navbar";
 import CreateStudySet from "./components/StudySetForm";
 import HomePage from "./components/HomePage";
 import StudySetCards from "./components/studySetCards";
-import HostGameForm from "./components/HostGameForm";
+import HostLobbyForm from "./components/HostLobbyForm";
 import HostLobby from "./components/HostLobby";
 import SetDetails from "./components/SetDetails";
 import Login from "./components/Login";
@@ -26,10 +26,10 @@ const App = () => {
 
     return (
         <div>
-            { showNav && <Navbar /> }
+            {showNav && <Navbar />}
             <Routes>
                 <Route exact path="/" element={<HomePage />} />
-                <Route path="/hostgame" element={<HostGameForm />} />
+                <Route path="/hostgame" element={<HostLobbyForm />} />
                 <Route path="/createStudySet" element={<CreateStudySet />} />
                 <Route path="/viewStudySets" element={<StudySetCards />} />
                 <Route path="/hostlobby" element={<HostLobby />} />
