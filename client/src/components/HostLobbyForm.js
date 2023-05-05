@@ -25,7 +25,10 @@ export default function HostLobbyForm() {
     const selectStudySet = id => {
         console.log('selected study set id: ' + id);
         setStudySetId(id);
-        setStudySetName(studySets.find(set => set.setId === id).name);
+        const selectedSet = studySets.find(set => set.setId == id);
+        if (selectedSet) {
+            setStudySetName(`${selectedSet.name}`);
+        }
     }
 
 
@@ -94,7 +97,7 @@ export default function HostLobbyForm() {
                             <select
                                 className="form-control"
                                 id="studySetName"
-                                value={studySetName}
+                                value={studySetId}
                                 onChange={event => selectStudySet(event.target.value)}
                             >
                                 {studySetOptions}
