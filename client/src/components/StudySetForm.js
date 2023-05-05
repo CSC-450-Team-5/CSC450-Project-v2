@@ -163,6 +163,7 @@ function StudySetForm() {
 
         // Create studySet object
         const studySet = {
+            setId: getSetID(),
             setTitle,
             description,
             creator_id: 1,
@@ -183,6 +184,11 @@ function StudySetForm() {
             .catch(err => console.log(JSON.stringify(err)));
         navigate('/viewStudySets');
 
+    };
+
+    const getSetID = () => {
+        const setId = Math.floor(Math.random() * 1000000000);
+        return setId;
     };
 
     return (
