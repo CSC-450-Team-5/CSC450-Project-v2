@@ -32,4 +32,22 @@ router.route('/login').post( async(req, res) => {
     }
 });
 
+// Handles HTTP post requests to add users to db.
+router.route('/signup').post((req, res) => {
+    // List out each of our db fields and define what values they should hold.
+    const username = req.body.username;
+    const password = req.body.password;
+    const PIs = [];
+
+    const newUser = new User({
+        username,
+        password,
+        PIs
+    });
+
+    newUser.save()
+        .then(() => res.json('User Added!'))
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
 module.exports = router;

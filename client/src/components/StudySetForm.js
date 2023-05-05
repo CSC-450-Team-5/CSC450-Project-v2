@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -19,6 +20,18 @@ const QuestionForm = (props) => {
                     <label htmlFor={'Question' + props.qid} className="float-left">Question</label>
                     <input type="text" className="form-control" id={'Question' + props.qid} placeholder="Enter Question" />
                 </div >
+            </div>
+            {/* Question performance indicator row labels*/}
+            <div className="row">
+                <div className="col mb-2">
+                    <label htmlFor={'PIList' + props.qid} className="float-left">Learning Objective</label>
+                    <select defaultValue={[]} className="form-control" name={'PIList' + props.qid} id={'PIList' + props.qid} multiple={true}>
+                        {/* needs to loop through and put all PIs as options from host user using user id from session */}
+                        <option value="test 1">Test</option>
+                        <option value="test 2">Test 2</option>
+                        <option value="test 3">Test 3</option>
+                    </select>
+                </div>
             </div>
             {/* Question answers row labels*/}
             <div className="row">
@@ -79,6 +92,7 @@ function StudySetForm() {
     const [questionList, setQuestionList] = useState([]);
     const [getQuestionID, setQuestionID] = useState(0);
     const [skipQuestionIds, setSkipQuestionIds] = useState([]);
+    const navigate = useNavigate();
 
     const onAddQuestionBtnClick = event => {
         event.preventDefault();
@@ -134,13 +148,15 @@ function StudySetForm() {
             const correctAnswerId = getCorrectAnswerStringFromQNum(i);
             const correctAnswer = document.getElementById(correctAnswerId).value;
 
+            const PIList = [...document.getElementById("PIList" + i).selectedOptions].map(o => o.value)
 
             // Create question object and add to questions array
             const questionObj = {
                 questionTitle,
                 question,
                 answers,
-                correctAnswer
+                correctAnswer,
+                PIList
             };
             questions.push(questionObj);
         }
@@ -166,6 +182,7 @@ function StudySetForm() {
             .then(response => response.json())
             .then(data => console.log(data))
             .catch(err => console.log(JSON.stringify(err)));
+        navigate('/viewStudySets');
 
     };
 
