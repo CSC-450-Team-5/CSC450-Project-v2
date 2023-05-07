@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 export default function HostLobby() {
     const [players, setPlayers] = useState([]);
     const { lobbyId } = useParams();
+    const navigate = useNavigate();
     const [lobby, setLobby] = useState(null);
 
     useEffect(() => {
@@ -41,6 +42,10 @@ export default function HostLobby() {
         clearInterval(this.pollingInterval);
     }
 
+    function handleStartGame() {
+        navigate(`game/${lobbyId}/host`);
+    }
+
     return (
         <div className="host-lobby-container bg-dark text-white p-3 px-5 container-fluid">
             <div className="row">
@@ -63,7 +68,7 @@ export default function HostLobby() {
                     <button
                         type="submit"
                         className="btn btn-primary col-12"
-                    // onlick={handleStartGame}
+                        onlick={handleStartGame}
                     >
                         Start Game
                     </button>
