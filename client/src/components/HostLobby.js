@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
-export default function HostLobby({ lobbyId }) {
+export default function HostLobby() {
     const [players, setPlayers] = useState([]);
+    const { lobbyId } = useParams();
+    const [lobby, setLobby] = useState(null);
 
     useEffect(() => {
-        startPolling();
+        // startPolling();
+        fetch(`/get-lobby/${lobbyId}`)
+            .then(response => response.json())
+            .then(data => setLobby(data))
+            .catch(error => console.log(error));
     }, [lobbyId]);
 
     async function fetchPlayerList() {

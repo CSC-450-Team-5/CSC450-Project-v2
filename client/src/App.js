@@ -9,7 +9,7 @@ import CreateStudySet from "./components/StudySetForm";
 import HomePage from "./components/HomePage";
 import StudySetCards from "./components/studySetCards";
 import HostLobbyForm from "./components/HostLobbyForm";
-import HostLobby from "./components/HostLobby";
+import LobbyDetails from "./components/HostLobby";
 import SetDetails from "./components/SetDetails";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
@@ -32,7 +32,7 @@ const App = () => {
                 <Route path="/hostgame" element={<HostLobbyForm />} />
                 <Route path="/createStudySet" element={<CreateStudySet />} />
                 <Route path="/viewStudySets" element={<StudySetCards />} />
-                <Route path="/hostlobby" element={<HostLobby />} />
+                <Route path="/lobby/:lobbyId" element={<LobbyDetails />} />
                 <Route path="/SetDetails/:setID" element={<SetDetails />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />

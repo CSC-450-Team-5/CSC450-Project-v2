@@ -4,10 +4,10 @@ const LobbyManager = require('./LobbyManager');
 const router = express.Router();
 const lobbyManager = new LobbyManager();
 
-router.post('/create-lobby', (req, res) => {
+router.post('/create-lobby', async (req, res) => {
     const { gameName, hostName, studySetId, gameMode, gameLength } = req.body;
-    console.log("received request to create lobby with set id: " + studySetId);
-    const lobby = lobbyManager.createLobby(gameName, hostName, studySetId, gameMode, gameLength);
+    const lobby = await lobbyManager.createLobby(gameName, hostName, studySetId, gameMode, gameLength);
+    console.log("created lobby: " + JSON.stringify(lobby));
 
     res.json(lobby);
 });
@@ -29,6 +29,13 @@ router.get('/get-player-list', (req, res) => {
     const playerList = lobbyManager.getPlayerList(lobbyId);
     res.json(playerList);
 });
+
+router.get('/get-lobby/:lobbyId', (req, res) => {
+    const { lobbyId } = req.params;
+    const lobby = lobbyManager.getLobby(lobbyId);
+    res.json(lobby);
+});
+
 
 
 module.exports = router;
