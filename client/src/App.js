@@ -37,7 +37,7 @@ const App = () => {
             
         }
     }, []);
-    console.log(localStorage.getItem("userId"));
+    console.log(`Current User ID: ${localStorage.getItem("userId")}`);
     var showNav = true;
     if (noNavRoutes.some((item) => pathname.includes(item)))
         showNav = false;
