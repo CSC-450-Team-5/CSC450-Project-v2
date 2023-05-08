@@ -14,6 +14,7 @@ import SetDetails from "./components/SetDetails";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import UserPage from "./components/UserPage";
+import GameQuestions from "./components/GameQuestions";
 import Game from "./components/Game";
 
 const App = () => {

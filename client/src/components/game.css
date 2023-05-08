@@ -1,0 +1,49 @@
+.player-container{
+    display: grid;
+    grid-template-rows: 60px 1fr 60px;
+}
+/* shapes------------------------------------ */
+.q1{
+    background-color: #e91b1b;
+    text-align: center;
+    border-radius: 4px;
+    padding: auto;
+}
+
+.q2{
+    background-color: #1b48e9;
+    text-align: center;
+    border-radius: 4px;
+    padding: auto;
+}
+
+.q3{
+    background-color: #e9c71b;
+    text-align: center;
+    border-radius: 4px;
+    padding: auto;
+}
+
+.q4{
+    background-color: #098626;
+    text-align: center;
+    border-radius: 4px;
+    padding: auto;
+}
+
+.q-blank{
+    box-shadow:  0 4px 6px 1px rgba(136, 136, 136, 0.062);
+    border-radius: 4px;
+}
+
+.shape{
+    width: 140px;
+    padding-top: 75px;
+}
+
+.shape-question{
+    width: auto;
+    float: left;
+    padding-top: 24%;
+}
+/* shapes------------------------------------ */

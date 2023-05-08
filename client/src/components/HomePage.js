@@ -1,6 +1,7 @@
 import React from 'react';
 import JoinGame from './JoinGame';
 
+
 const HomePage = () => {
     return (
         <div className="bg-dark text-white p-3">
