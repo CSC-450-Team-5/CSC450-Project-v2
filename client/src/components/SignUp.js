@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 // Import a logo image
 // import logo from './logo.png';
 
-const Login = () => {
+const Signup = () => {
   // Use state hooks for username and password
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -28,10 +28,12 @@ const Login = () => {
       });
 
       // Parse the response as JSON
-      const data = await response.json();
+      // const data = await response.json();
       // Log the data to the console
-      console.log(data);
+      // console.log(data);
       // useNavigate(HomePage)
+      const { userId } = await response.json();
+      localStorage.setItem('userId', userId);
       navigate('/');
     } catch (error) {
       // Handle any errors
@@ -92,4 +94,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
