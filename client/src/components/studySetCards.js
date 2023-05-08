@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const StudySetCard = (props) => {
     const studySet = props.studySet;
+    const navigate = useNavigate();
+    const onStudySetClick = (event, studySetId) => {
+        event.preventDefault();
+        navigate(`/SetDetails/${studySetId}`);
+    };
     return (
-        <div className="card col-12 col-md-4 p-1 bg-dark border bg-secondary">
+        <div className="card col-12 col-md-4 p-1 m-1 bg-dark border bg-secondary">
             
             <div className="card-header bg-dark">
                 {studySet.name}
             </div>
             <div className="card-body bg-secondary">
-                <p className="card-text" >{studySet.description}</p>
-                <button variant="primary stretched-link">  <Link to={'/SetDetails/' + studySet._id}>Open Study Set</Link> </button>
+                <p className="card-text">{studySet.description}</p>
+                <button className="btn btn-primary" onClick={(event) => onStudySetClick(event, studySet._id)}>Open Study Set</button>
 
             </div>
         </div>
@@ -19,6 +24,7 @@ const StudySetCard = (props) => {
 }
 
 function StudySetCards() {
+
     //get the list of study sets
     const [studySets, setStudySets] = useState([]);
     useEffect(() => {
@@ -30,7 +36,6 @@ function StudySetCards() {
             })
             .catch(err => console.log(err));
     }, []);
-
 
     const cards = [];
     for (let i = 0; i < studySets.length; i++) {
@@ -46,17 +51,15 @@ function StudySetCards() {
     // }
 
     return (
-        <div className="study-set-container bg-dark text-white p-2 px-5">
-            <div className="row-12 ">
-                <div className="col-12 p-3" >
+        <div className="study-set-container bg-dark text-white p-3 px-5 container-fluid">
+            <div className="row">
+                <div className="col-12" >
                     <h1>Study Sets</h1>
                 </div>
             </div>
             <div className='container-fluid'>
-              <div className="row-12" >
-                    <div className='col-12'>
-                         {cards} 
-                    </div>    
+                <div className="row" >
+                    {cards} 
                 </div>
             </div>
         </div>
