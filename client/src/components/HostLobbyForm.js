@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function HostLobbyForm() {
     const [gameName, setGameName] = useState('');
@@ -8,6 +10,7 @@ export default function HostLobbyForm() {
     const [gameMode, setGameMode] = useState('Classic');
     const [gameLength, setGameLength] = useState('5');
     const [studySets, setStudySets] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch('http://localhost:5000/studysets/getStudySets')
@@ -17,7 +20,7 @@ export default function HostLobbyForm() {
     }, []);
 
     const studySetOptions = studySets.map((currentStudySet, index) => (
-        <option key={index} value={currentStudySet.setId}>
+        <option key={index} value={currentStudySet._id}>
             {currentStudySet.name}
         </option>
     ));
@@ -25,16 +28,16 @@ export default function HostLobbyForm() {
     const selectStudySet = id => {
         console.log('selected study set id: ' + id);
         setStudySetId(id);
-        const selectedSet = studySets.find(set => set.setId == id);
+        const selectedSet = studySets.find(set => set._id == id);
         if (selectedSet) {
             setStudySetName(`${selectedSet.name}`);
         }
     }
 
 
-    const handleSubmit = event => {
+    const handleSubmit = async event => {
         event.preventDefault();
-        console.log('submitting form with studyset: ' + studySetId);
+        // console.log('submitting form with studyset: ' + studySetId);
 
         //how the object being received on the server:
         //gameName, hostName, studySetId, gameMode, gameLength
@@ -45,18 +48,20 @@ export default function HostLobbyForm() {
             gameMode,
             gameLength: Number(gameLength),
         };
-        console.log(JSON.stringify(requestBody));
+        // console.log(JSON.stringify(requestBody));
 
-        fetch('http://localhost:5000/quiz/create-lobby', {
+        const response = await fetch('http://localhost:5000/quiz/create-lobby', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(requestBody),
-        })
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(err => console.log(err));
+        });
+        const data = await response.json();
+        console.log('received from lobby id server: ' + data.id);
+
+        //redirect to lobby page
+        navigate(`/lobby/${data.id}`);
     };
 
     return (

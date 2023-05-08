@@ -23,7 +23,6 @@ const studySetRouter = require('./routes/studysets');
 const authRouter = require('./routes/auth');
 const quizRouter = require('./routes/quiz');
 
-
 app.use('/users', userRouter);
 app.use('/studysets', studySetRouter);
 app.use('/auth', authRouter);

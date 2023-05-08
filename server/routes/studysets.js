@@ -30,7 +30,6 @@ router.post('/addstudyset', async (req, res) => {
 
 // Handles HTTP get by id request
 router.route('/:id').get((req, res) => {
-    console.log("GET BY ID: " + req.params.id);
     StudySet.findById(req.params.id)
         .then(studySet => res.json(studySet))
         .catch(err => res.status(500).json({ error: err }));
