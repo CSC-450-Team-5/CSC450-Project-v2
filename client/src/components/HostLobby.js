@@ -8,15 +8,16 @@ export default function HostLobby() {
     const [lobby, setLobby] = useState(null);
 
     useEffect(() => {
-        // startPolling();
+        //startPolling();
         fetch(`/get-lobby/${lobbyId}`)
-            .then(response => response.json())
+            .then(response => response)
             .then(data => setLobby(data))
             .catch(error => console.log(error));
+        fetchPlayerList();
     }, [lobbyId]);
 
     async function fetchPlayerList() {
-        await fetch(`/api/lobbies/${lobbyId}/players`, {
+        await fetch(`http://localhost:5000/quiz/get-player-list`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ lobbyId }),
@@ -26,54 +27,56 @@ export default function HostLobby() {
             }
             return response.json();
         }).then((data) => {
+            console.log(data);
             setPlayers(data);
         }).catch((error) => {
             console.error(error);
         });
     }
 
-    async function startPolling() {
-        this.pollingInterval = setInterval(() => {
-            this.fetchPlayerList();
-        }, 1000);
-    }
-
-    async function stopPolling() {
-        clearInterval(this.pollingInterval);
-    }
-
     function handleStartGame() {
-        navigate(`game/${lobbyId}/host`);
+        //check if we are host
+        let playerId = "host";
+
+        navigate(`game/${playerId}`);
     }
 
     return (
-        <div className="host-lobby-container bg-dark text-white p-3 px-5 container-fluid">
-            <div className="row">
-                <div className="col-12">
-                    <h1>Host Lobby</h1>
+        <>
+            <div className="host-lobby-container bg-dark text-white p-3 px-5 container-fluid">
+                <div className="row">
+                    <div className="col-12">
+                        <h1>Host Lobby</h1>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-12">
+                        <h2>Lobby ID: {lobbyId}</h2>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-12">
+                        <h2>Players:</h2>
+                        <ul>
+                            {players.map((player) => (
+                                <li key={player.id}>{player.name}</li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-12">
+                        <button
+                            type="submit"
+                            className="btn btn-primary col-12"
+                            onClick={handleStartGame}
+                        >
+                            Start Game
+                        </button>
+                        <button className='btn btn-primary col-12 mt-3' onClick={fetchPlayerList}>Refresh</button>
+                    </div>
                 </div>
             </div>
-            <div className="row">
-                <div className="col-12">
-                    <h2>Lobby ID: {lobbyId}</h2>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-12">
-                    <h2>Players: {players.join(', ')}</h2>
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-12">
-                    <button
-                        type="submit"
-                        className="btn btn-primary col-12"
-                        onlick={handleStartGame}
-                    >
-                        Start Game
-                    </button>
-                </div>
-            </div>
-        </div>
+        </>
     );
 }

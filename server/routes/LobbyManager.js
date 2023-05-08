@@ -1,7 +1,6 @@
 const { get } = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 
-
 class LobbyManager {
     constructor() {
         this.lobbies = [];
@@ -87,6 +86,12 @@ class LobbyManager {
 
         return lobby;
     }
+
+    generatePlayerId() {
+        return uuidv4();
+    }
+
+
 }
 
 module.exports = LobbyManager;

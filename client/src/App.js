@@ -9,13 +9,14 @@ import CreateStudySet from "./components/StudySetForm";
 import HomePage from "./components/HomePage";
 import StudySetCards from "./components/studySetCards";
 import HostLobbyForm from "./components/HostLobbyForm";
-import LobbyDetails from "./components/HostLobby";
 import SetDetails from "./components/SetDetails";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Logout from "./components/Logout";
 import UserPage from "./components/UserPage";
 import Game from "./components/Game";
+import LobbyDetails from "./components/HostLobby";
+
 
 const App = () => {
     const noNavRoutes = ["/signup", "/login"];
@@ -39,7 +40,7 @@ const App = () => {
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/logout" element={<Logout />} />
                 <Route path="/users/:id" element={<UserPage />} />
-                <Route path="/game/:lobbyId/:playerId" element={<Game />} />
+                <Route path="/lobby/:lobbyId/game/:playerId" element={<Game />} />
             </Routes>
         </div>
     );

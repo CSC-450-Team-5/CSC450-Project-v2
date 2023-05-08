@@ -22,7 +22,7 @@
 
 import React, { useState } from "react";
 
-export default function JoinGame({ handleJoinGame }) {
+export default function JoinGame() {
     const [gameCode, setGameCode] = useState("");
     const [playerName, setPlayerName] = useState("");
 
@@ -30,12 +30,12 @@ export default function JoinGame({ handleJoinGame }) {
         event.preventDefault();
 
         try {
-            const response = await fetch(`/api/games/${gameCode}/join`, {
+            const response = await fetch(`http://localhost:5000/quiz/join-lobby`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ playerName }),
+                body: JSON.stringify({ playerName, lobbyId: gameCode }),
             });
 
             if (!response.ok) {
@@ -44,7 +44,6 @@ export default function JoinGame({ handleJoinGame }) {
             }
 
             const gameData = await response.json();
-            handleJoinGame(gameData);
         } catch (error) {
             console.error(error);
             // TODO: Handle error in UI
@@ -79,7 +78,7 @@ export default function JoinGame({ handleJoinGame }) {
                             value={playerName}
                             onChange={(event) => setPlayerName(event.target.value)}
                         />
-                        <button type="submit" className="btn btn-primary col-12">
+                        <button type="submit" className="btn btn-primary col-12" onClick={handleSubmit}>
                             Join Game
                         </button>
                     </div>
