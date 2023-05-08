@@ -21,6 +21,18 @@ const QuestionForm = (props) => {
                     <input type="text" className="form-control" id={'Question' + props.qid} placeholder="Enter Question" />
                 </div >
             </div>
+            {/* Question performance indicator row labels*/}
+            <div className="row">
+                <div className="col mb-2">
+                    <label htmlFor={'PIList' + props.qid} className="float-left">Learning Objective</label>
+                    <select defaultValue={[]} className="form-control" name={'PIList' + props.qid} id={'PIList' + props.qid} multiple={true}>
+                        {/* needs to loop through and put all PIs as options from host user using user id from session */}
+                        <option value="test 1">Test</option>
+                        <option value="test 2">Test 2</option>
+                        <option value="test 3">Test 3</option>
+                    </select>
+                </div>
+            </div>
             {/* Question answers row labels*/}
             <div className="row">
                 <div className="col-12">
@@ -136,19 +148,22 @@ function StudySetForm() {
             const correctAnswerId = getCorrectAnswerStringFromQNum(i);
             const correctAnswer = document.getElementById(correctAnswerId).value;
 
+            const PIList = [...document.getElementById("PIList" + i).selectedOptions].map(o => o.value)
 
             // Create question object and add to questions array
             const questionObj = {
                 questionTitle,
                 question,
                 answers,
-                correctAnswer
+                correctAnswer,
+                PIList
             };
             questions.push(questionObj);
         }
 
         // Create studySet object
         const studySet = {
+            setId: getSetID(),
             setTitle,
             description,
             creator_id: 1,
@@ -169,6 +184,11 @@ function StudySetForm() {
             .catch(err => console.log(JSON.stringify(err)));
         navigate('/viewStudySets');
 
+    };
+
+    const getSetID = () => {
+        const setId = Math.floor(Math.random() * 1000000000);
+        return setId;
     };
 
     return (

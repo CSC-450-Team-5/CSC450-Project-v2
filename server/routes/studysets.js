@@ -13,9 +13,10 @@ router.route('/getStudySets').get((req, res) => {
 // Handles HTTP post requests to add studysets to db.
 router.post('/addstudyset', async (req, res) => {
     // List out each of our db fields and define what values they should hold.
-    const { setTitle, description, creator_id, questions } = req.body;
+    const { setId, setTitle, description, creator_id, questions } = req.body;
 
     const newStudySet = new StudySet({
+        setId,
         name: setTitle,
         description,
         creator_id,
