@@ -21,6 +21,7 @@
 // }
 
 import React, { useState } from "react";
+import GameQuestions from "./GameQuestions";
 
 export default function JoinGame({ handleJoinGame }) {
     const [gameCode, setGameCode] = useState("");
@@ -79,9 +80,10 @@ export default function JoinGame({ handleJoinGame }) {
                             value={playerName}
                             onChange={(event) => setPlayerName(event.target.value)}
                         />
-                        <button type="submit" className="btn btn-primary col-12">
+                        <button onClick={GameQuestions} type="submit" className="btn btn-primary col-12">
                             Join Game
                         </button>
+                        {/* stuck here with button opening game*/}
                     </div>
                 </div>
             </form>
