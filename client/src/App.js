@@ -15,6 +15,7 @@ import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Logout from "./components/Logout";
 import UserPage from "./components/UserPage";
+import GameQuestions from "./components/GameQuestions";
 
 const App = () => {
     const noNavRoutes = ["/signup", "/login"];
@@ -38,6 +39,7 @@ const App = () => {
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/logout" element={<Logout />} />
                 <Route path="/users/:id" element={<UserPage />} />
+                <Route path = "/gamequestions:id" element={<GameQuestions/>} />
             </Routes>
         </div>
     );
