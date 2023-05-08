@@ -46,7 +46,7 @@ const App = () => {
         <div>
             {showNav && <Navbar />}
             <Routes>
-            <Route exact path="/" element={<HomePage />} />
+                <Route exact path="/" element={<HomePage />} />
                 {isAuthenticated ? (
                     <>
                         <Route path="/hostgame" element={<HostLobbyForm />} />
