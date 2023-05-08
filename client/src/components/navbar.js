@@ -8,32 +8,11 @@ import { Nav, Navbar, Button } from 'react-bootstrap';
 
 // Here, we display our Navbar
 export default function Navigationbar() {
+    const handleLogout = () => {
+        localStorage.removeItem('userId');
+        window.location.href = '/login';
+    };
     return (
-        // <div>
-        //     <nav className="navbar navbar-expand-lg navbar-dark bg-secondary px-3">
-        //         <NavLink className="navbar-brand" to="/">
-        //             <h1>Home</h1>
-        //         </NavLink>
-        //         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        //             <span class="navbar-toggler-icon"></span>
-        //         </button>
-
-        //         <div className="collapse navbar-collapse" id="navbarNav">
-        //             <ul className="navbar-nav ml-auto">
-        //                 <li className="nav-item">
-        //                     <NavLink className="nav-link" to="/viewStudySets">
-        //                         View Study Sets
-        //                     </NavLink>
-        //                 </li>
-        //                 <li className="nav-item">
-        //                     <NavLink className="nav-link" to="/createStudySet">
-        //                         Create Study Set
-        //                     </NavLink>
-        //                 </li>
-        //             </ul>
-        //         </div>
-        //     </nav>
-        // </div>
         <Navbar bg="dark" variant="dark" expand="lg" className="p-3">
             <Navbar.Brand href="/">Home</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -45,9 +24,10 @@ export default function Navigationbar() {
                 </Nav>
             </Navbar.Collapse>
 
-            {/* <Nav className="ml-auto">
-                <Button variant="outline-light" href="/logout">Logout</Button>
-            </Nav> */}
+            <Nav className="ml-auto">
+                <Nav.Link href="/users/">User Profile</Nav.Link>
+                <Button variant="outline-light" onClick={handleLogout}>Logout</Button>
+            </Nav>
         </Navbar>
 
     );
