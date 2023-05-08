@@ -25,10 +25,8 @@ const Login = () => {
         body: JSON.stringify({ username, password })
       });
 
-      // Parse the response as JSON
-      const data = await response.json();
-      // Log the data to the console
-      console.log(data);
+      const { userId } = await response.json();
+      localStorage.setItem('userId', userId);
       navigate('/');
     } catch (error) {
       // Handle any errors
