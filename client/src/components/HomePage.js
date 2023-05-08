@@ -1,6 +1,6 @@
 import React from 'react';
 import JoinGame from './JoinGame';
-import GameQuestions from './GameQuestions';
+
 
 const HomePage = () => {
     return (

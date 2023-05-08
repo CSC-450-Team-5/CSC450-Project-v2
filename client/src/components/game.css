@@ -7,24 +7,28 @@
     background-color: #e91b1b;
     text-align: center;
     border-radius: 4px;
+    padding: auto;
 }
 
 .q2{
     background-color: #1b48e9;
     text-align: center;
     border-radius: 4px;
+    padding: auto;
 }
 
 .q3{
     background-color: #e9c71b;
     text-align: center;
     border-radius: 4px;
+    padding: auto;
 }
 
 .q4{
     background-color: #098626;
     text-align: center;
     border-radius: 4px;
+    padding: auto;
 }
 
 .q-blank{

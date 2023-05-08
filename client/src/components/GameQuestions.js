@@ -8,7 +8,7 @@ import triangle from '../Images/triangle.png'
 
 export default function GameQuestions(props){
     return(
-        <div className='questions-container' >
+        <div className='questions-container bg-dark p-3' >
             <Timer/>
             {/* displays timer*/}
             {/*displays questions with buttons*/}
@@ -16,25 +16,33 @@ export default function GameQuestions(props){
             <div className='questions-grid' >
                 <div className='question q1'>
                 <div className='shape-container' >
-                    <img src={triangle} alt='' className='shape-question' />
+                <button onClick={SubmitEvent} type="submit" className="btn btn-primary col-12">
+                     <img src={star} alt='' className='shape-question' />
+                        </button>
                 </div> 
                     <p id='player-join' >{props.answer1}</p>
                  </div> 
                 <div className='question q2'>
                     <div className='shape-container'>
-                    <img src={star} alt='' className='shape-question' />
+                    <button onClick={SubmitEvent} type="submit" className="btn btn-primary col-12">
+                     <img src={triangle} alt='' className='shape-question' />
+                        </button>
                     </div> 
                     <p id='player-join'>{props.answer2}</p>
                  </div>
                 <div className='question q3'>
                     <div className='shape-container'>
-                    <img src={square} alt='' className='shape-question' />
+                    <button onClick={SubmitEvent} type="submit" className="btn btn-primary col-12">
+                     <img src={square} alt='' className='shape-question' />
+                        </button>
                     </div> 
                     <p id='player-join'>{props.answer3}</p>
                  </div>
                 <div className='question q4'>
                     <div className='shape-container'>
+                    <button onClick={SubmitEvent} type="submit" className="btn btn-primary col-12">
                      <img src={diamond} alt='' className='shape-question' />
+                        </button>
                     </div> 
                      <p id='player-join'>{props.answer4}</p>
                  </div>
