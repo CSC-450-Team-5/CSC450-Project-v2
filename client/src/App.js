@@ -9,12 +9,13 @@ import CreateStudySet from "./components/StudySetForm";
 import HomePage from "./components/HomePage";
 import StudySetCards from "./components/studySetCards";
 import HostLobbyForm from "./components/HostLobbyForm";
-import HostLobby from "./components/HostLobby";
+import LobbyDetails from "./components/HostLobby";
 import SetDetails from "./components/SetDetails";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import Logout from "./components/Logout";
 import UserPage from "./components/UserPage";
+import Game from "./components/Game";
 
 const App = () => {
     const noNavRoutes = ["/signup", "/login"];
@@ -32,12 +33,13 @@ const App = () => {
                 <Route path="/hostgame" element={<HostLobbyForm />} />
                 <Route path="/createStudySet" element={<CreateStudySet />} />
                 <Route path="/viewStudySets" element={<StudySetCards />} />
-                <Route path="/hostlobby" element={<HostLobby />} />
+                <Route path="/lobby/:lobbyId" element={<LobbyDetails />} />
                 <Route path="/SetDetails/:setID" element={<SetDetails />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/logout" element={<Logout />} />
                 <Route path="/users/:id" element={<UserPage />} />
+                <Route path="/game/:lobbyId/:playerId" element={<Game />} />
             </Routes>
         </div>
     );

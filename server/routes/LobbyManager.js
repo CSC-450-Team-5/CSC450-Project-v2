@@ -7,30 +7,32 @@ class LobbyManager {
         this.lobbies = [];
     }
 
-    createLobby(gameName, hostName, studySetId, gameMode, gameLength) {
+    async createLobby(gameName, hostName, studySetId, gameMode, gameLength) {
+        let quiz = await this.getQuiz(studySetId);
+        console.log("received from createLobby inside lobby manager: " + JSON.stringify(quiz));
         const lobby = {
             id: uuidv4(),
-            gameName: gameName,
-            hostName: hostName,
-            gameMode: gameMode,
-            gameLength: gameLength,
+            gameName,
+            hostName,
+            gameMode,
+            gameLength,
             players: [],
-            quiz: this.getQuiz(studySetId),
+            quiz,
         };
 
         this.lobbies.push(lobby);
+
         return lobby;
     }
 
     getQuiz(studySetId) {
-        fetch('http://localhost:5000/studysets/' + studySetId)
+        return fetch('http://localhost:5000/studysets/' + studySetId)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                //console.log("received from getQuiz inside lobby manager: " + JSON.stringify(data));
                 return data;
             })
-            .catch(err => console.log(err)
-            )
+            .catch(err => console.log(err));
     }
 
 
@@ -73,6 +75,15 @@ class LobbyManager {
             currentQuestion: 0,
             playerResponses: {},
         };
+
+        return lobby;
+    }
+
+    getLobby(lobbyId) {
+        const lobby = this.lobbies.find((lobby) => lobby.id === lobbyId);
+        if (!lobby) {
+            throw new Error(`Lobby with ID ${lobbyId} not found`);
+        }
 
         return lobby;
     }

@@ -5,7 +5,6 @@ import "bootstrap/dist/css/bootstrap.css";
 import { Nav, Navbar, Button } from 'react-bootstrap';
 
 // We import NavLink to utilize the react router.
-// ddadawaaddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddaaaaaaaaaaaaaaaaaaaaaawwwwwwwwwwwwwwwwwwwdddddaaaaaaaaaaaaaaaaaaawdwwwwwwwwwwwwAaaaaaaaaaaasdwwwwwwwwwwwwwwddswwwwwwww
 
 // Here, we display our Navbar
 export default function Navigationbar() {
@@ -45,7 +44,7 @@ export default function Navigationbar() {
                     <Nav.Link href="/createStudySet">Create Study Set</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
-            
+
             {/* <Nav className="ml-auto">
                 <Button variant="outline-light" href="/logout">Logout</Button>
             </Nav> */}
