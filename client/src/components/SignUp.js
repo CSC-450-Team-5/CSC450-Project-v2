@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 // Import a logo image
 // import logo from './logo.png';
 
-const Login = () => {
+const Signup = () => {
   // Use state hooks for username and password
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -92,4 +92,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

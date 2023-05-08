@@ -1,7 +1,8 @@
 import React from 'react';
 import JoinGame from './JoinGame';
 
-const HomePage = () => {
+const HomePage = ({activeUser}) => {
+    console.log(`activeUser: ${activeUser}`);
     return (
         <div className="bg-dark text-white p-3">
             <div className="container">
@@ -17,6 +18,7 @@ const HomePage = () => {
                 </div>
             </div>
         </div>
+        
     );
 };
 

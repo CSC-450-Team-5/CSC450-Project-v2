@@ -26,9 +26,11 @@ const Login = () => {
       });
 
       // Parse the response as JSON
-      const data = await response.json();
+      // const data = await response.json();
       // Log the data to the console
-      console.log(data);
+      // console.log(data);
+      const { token } = await response.json();
+      localStorage.setItem('token', token);
       navigate('/');
     } catch (error) {
       // Handle any errors
