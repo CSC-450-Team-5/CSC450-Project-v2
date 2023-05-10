@@ -28,13 +28,13 @@ const App = () => {
         if (isPublicRoute) {
             setIsAuthenticated(true);
         } else {
-            if(localStorage.getItem("userId") != null){
+            if (localStorage.getItem("userId") != null) {
                 setIsAuthenticated(true);
-            } else{
+            } else {
                 setIsAuthenticated(false);
                 navigate('/login');
             }
-            
+
         }
     }, []);
     console.log(`Current User ID: ${localStorage.getItem("userId")}`);
@@ -59,7 +59,7 @@ const App = () => {
                         <Route path="/user" element={<UserPage />} />
                         <Route path="/game/:lobbyId/:playerId" element={<Game />} />
                     </>
-                ) :(
+                ) : (
                     <>
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<SignUp />} />

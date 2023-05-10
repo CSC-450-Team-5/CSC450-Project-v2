@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 // Import react-bootstrap components
 import { Col, Button, Row, Container, Card, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import QuixelLogo from '../assets/QuixelLogo.png';
 
 // Import a logo image
 // import logo from './logo.png';
@@ -46,7 +47,7 @@ const Login = () => {
               <Col>
                 {/* Use an image component to display the logo */}
                 {/* <img src={logo} alt="Logo" /> */}
-                <img src="https://via.placeholder.com/150?text=Logo" alt="Logo" />
+                <img src={QuixelLogo} alt="Logo" style={{ width: '150px', height: 'auto' }} />
               </Col>
             </Row>
             {/* Use a form component with react-bootstrap components */}
