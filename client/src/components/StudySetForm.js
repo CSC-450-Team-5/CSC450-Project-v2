@@ -166,7 +166,7 @@ function StudySetForm() {
             setId: getSetID(),
             setTitle,
             description,
-            creator_id: 1,
+            creator_id: `${localStorage.getItem("userId")}`,
             questions
         };
 

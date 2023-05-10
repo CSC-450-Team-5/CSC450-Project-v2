@@ -38,7 +38,7 @@ const App = () => {
             
         }
     }, []);
-    console.log(localStorage.getItem("userId"));
+    console.log(`Current User ID: ${localStorage.getItem("userId")}`);
     var showNav = true;
     if (noNavRoutes.some((item) => pathname.includes(item)))
         showNav = false;
@@ -57,7 +57,7 @@ const App = () => {
                         <Route path="/SetDetails/:setID" element={<SetDetails />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<SignUp />} />
-                        <Route path="/users/:id" element={<UserPage />} />
+                        <Route path="/users" element={<UserPage />} />
                         <Route path="/game/:lobbyId/:playerId" element={<Game />} />
                     </>
                 ) :(
