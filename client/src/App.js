@@ -14,7 +14,7 @@ import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import UserPage from "./components/UserPage";
 import Game from "./components/Game";
-import LobbyDetails from "./components/HostLobby";
+import LobbyDetails from "./components/LobbyDetails";
 
 
 const App = () => {
@@ -29,13 +29,13 @@ const App = () => {
         if (isPublicRoute) {
             setIsAuthenticated(true);
         } else {
-            if(localStorage.getItem("userId") != null){
+            if (localStorage.getItem("userId") != null) {
                 setIsAuthenticated(true);
-            } else{
+            } else {
                 setIsAuthenticated(false);
                 navigate('/login');
             }
-            
+
         }
     }, []);
     console.log(`Current User ID: ${localStorage.getItem("userId")}`);
@@ -53,17 +53,17 @@ const App = () => {
                         <Route path="/hostgame" element={<HostLobbyForm />} />
                         <Route path="/createStudySet" element={<CreateStudySet />} />
                         <Route path="/viewStudySets" element={<StudySetCards />} />
-                        <Route path="/lobby/:lobbyId" element={<LobbyDetails />} />
+                        <Route path="/lobby/:lobbyId/:playerId" element={<LobbyDetails />} />
                         <Route path="/SetDetails/:setID" element={<SetDetails />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<SignUp />} />
                         <Route path="/user" element={<UserPage />} />
                         <Route path="/game/:lobbyId/:playerId" element={<Game />} />
                     </>
-                ) :(
+                ) : (
                     <>
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/signup" element={<SignUp />} />
+                        {/* <Route path="/login" element={<Login />} />
+                        <Route path="/signup" element={<SignUp />} /> */}
                     </>
                 )}
             </Routes>
