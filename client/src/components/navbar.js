@@ -27,7 +27,7 @@ export default function Navigationbar() {
                 </Nav>
             </Navbar.Collapse>
 
-            <Nav className="ml-auto d-none d-lg-block">
+            <Nav className="ml-auto d-none d-lg-flex">
                 <Nav.Link href="/users/">User Profile</Nav.Link>
                 <Button variant="outline-light" onClick={handleLogout}>Logout</Button>
             </Nav>
