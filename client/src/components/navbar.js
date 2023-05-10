@@ -22,13 +22,13 @@ export default function Navigationbar() {
                     <Nav.Link href="/hostgame">Host Game</Nav.Link>
                     <Nav.Link href="/viewStudySets">View Study Sets</Nav.Link>
                     <Nav.Link href="/createStudySet">Create Study Set</Nav.Link>
-                    <Nav.Link href="/users/" className="d-lg-none">User Profile</Nav.Link>
+                    <Nav.Link href="/user/" className="d-lg-none">User Profile</Nav.Link>
                     <Nav.Link href="" onClick={handleLogout} className="d-lg-none">Logout</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
 
             <Nav className="ml-auto d-none d-lg-flex">
-                <Nav.Link href="/users/">User Profile</Nav.Link>
+                <Nav.Link href="/user/">User Profile</Nav.Link>
                 <Button variant="outline-light" onClick={handleLogout}>Logout</Button>
             </Nav>
         </Navbar>
