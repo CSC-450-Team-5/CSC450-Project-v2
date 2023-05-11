@@ -59,9 +59,10 @@ export default function HostLobbyForm() {
         });
         const data = await response.json();
         console.log('received from lobby id server: ' + data.id);
+        console.log('received from lobby: ' + JSON.stringify(data));
 
         //redirect to lobby page
-        navigate(`/lobby/${data.id}`);
+        navigate(`/lobby/${data.id}/host`);
     };
 
     return (

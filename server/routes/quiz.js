@@ -7,13 +7,15 @@ const lobbyManager = new LobbyManager();
 router.post('/create-lobby', async (req, res) => {
     const { gameName, hostName, studySetId, gameMode, gameLength } = req.body;
     const lobby = await lobbyManager.createLobby(gameName, hostName, studySetId, gameMode, gameLength);
-    console.log("created lobby: " + JSON.stringify(lobby));
+    //console.log("created lobby: " + JSON.stringify(lobby));
 
     res.json(lobby);
 });
 
 router.post('/join-lobby', (req, res) => {
-    const { lobbyId, playerId, playerName } = req.body;
+    const { lobbyId, playerName } = req.body;
+    console.log("playerName joining: " + playerName);
+    const playerId = lobbyManager.generatePlayerId();
     const lobby = lobbyManager.addPlayerToLobby(lobbyId, playerId, playerName);
     res.json(lobby);
 });
@@ -24,8 +26,8 @@ router.post('/start-quiz', (req, res) => {
     res.json(lobby);
 });
 
-router.get('/get-player-list', (req, res) => {
-    const { lobbyId } = req.query;
+router.post('/get-player-list', (req, res) => {
+    const { lobbyId } = req.body;
     const playerList = lobbyManager.getPlayerList(lobbyId);
     res.json(playerList);
 });

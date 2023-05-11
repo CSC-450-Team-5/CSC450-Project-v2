@@ -1,14 +1,13 @@
 const { get } = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 
-
 class LobbyManager {
     constructor() {
         this.lobbies = [];
     }
 
     async createLobby(gameName, hostName, studySetId, gameMode, gameLength) {
-        let quiz = await this.getQuiz(studySetId);
+        const quiz = await this.getQuiz(studySetId);
         console.log("received from createLobby inside lobby manager: " + JSON.stringify(quiz));
         const lobby = {
             id: uuidv4(),
@@ -25,15 +24,28 @@ class LobbyManager {
         return lobby;
     }
 
-    getQuiz(studySetId) {
-        return fetch('http://localhost:5000/studysets/' + studySetId)
-            .then(response => response.json())
-            .then(data => {
-                //console.log("received from getQuiz inside lobby manager: " + JSON.stringify(data));
-                return data;
-            })
-            .catch(err => console.log(err));
+    async getQuiz(studySetId) {
+        try {
+            const response = await fetch('http://localhost:5000/studysets/' + studySetId
+                , {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+            if (!response.ok) {
+                throw new Error('Error fetching quiz');
+            }
+            const data = await response.json();
+            console.log("received from getQuiz inside lobby manager: " + JSON.stringify(data));
+            return data;
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
     }
+
 
 
     addPlayerToLobby(lobbyId, playerId, playerName) {
@@ -87,6 +99,12 @@ class LobbyManager {
 
         return lobby;
     }
+
+    generatePlayerId() {
+        return uuidv4();
+    }
+
+
 }
 
 module.exports = LobbyManager;

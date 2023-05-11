@@ -9,12 +9,13 @@ import CreateStudySet from "./components/StudySetForm";
 import HomePage from "./components/HomePage";
 import StudySetCards from "./components/studySetCards";
 import HostLobbyForm from "./components/HostLobbyForm";
-import LobbyDetails from "./components/HostLobby";
 import SetDetails from "./components/SetDetails";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import UserPage from "./components/UserPage";
 import Game from "./components/Game";
+import LobbyDetails from "./components/LobbyDetails";
+
 
 const App = () => {
     const noNavRoutes = ["/signup", "/login"];
@@ -52,7 +53,7 @@ const App = () => {
                         <Route path="/hostgame" element={<HostLobbyForm />} />
                         <Route path="/createStudySet" element={<CreateStudySet />} />
                         <Route path="/viewStudySets" element={<StudySetCards />} />
-                        <Route path="/lobby/:lobbyId" element={<LobbyDetails />} />
+                        <Route path="/lobby/:lobbyId/:playerId" element={<LobbyDetails />} />
                         <Route path="/SetDetails/:setID" element={<SetDetails />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<SignUp />} />
@@ -61,8 +62,8 @@ const App = () => {
                     </>
                 ) : (
                     <>
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/signup" element={<SignUp />} />
+                        {/* <Route path="/login" element={<Login />} />
+                        <Route path="/signup" element={<SignUp />} /> */}
                     </>
                 )}
             </Routes>
