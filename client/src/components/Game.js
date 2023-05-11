@@ -8,23 +8,30 @@ export default function Game() {
     //fetch lobby details from server
     var lobby;
     useEffect(() => {
+        console.log("lobby id: " + lobbyId + " player id: " + playerId);
         lobby = fetch(`/get-lobby/${lobbyId}`);
-    }, [lobbyId]);
+    }, []);
 
 
-    if (playerId == "host") {
+    if (playerId === "host") {
+        console.log("host view");
         return (
-            <div>
-                <h1>Host View</h1>
-                <h2>Lobby ID: {lobby.id}</h2>
-            </div>
+            <>
+                <div className="text-white">
+                    <h1>Host View</h1>
+                    <h2>Lobby ID: {lobbyId}</h2>
+                </div>
+            </>
+
         )
     }
     else {
         return (
-            <div>
-                <h1>Player View</h1>
-            </div>
+            <>
+                <div className="text-white">
+                    <h1>Player View</h1>
+                </div>
+            </>
         )
     }
 }
