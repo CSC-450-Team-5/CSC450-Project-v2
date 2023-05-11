@@ -1,5 +1,4 @@
 const { get } = require('mongoose');
-const { v4: uuidv4 } = require('uuid');
 
 
 class LobbyManager {
@@ -11,7 +10,7 @@ class LobbyManager {
         let quiz = await this.getQuiz(studySetId);
         console.log("received from createLobby inside lobby manager: " + JSON.stringify(quiz));
         const lobby = {
-            id: uuidv4(),
+            id: this.generateUniqueId(),
             gameName,
             hostName,
             gameMode,
@@ -24,6 +23,15 @@ class LobbyManager {
 
         return lobby;
     }
+
+    generateUniqueId() {
+        let result = "";
+        const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        for (let i = 0; i < 5; i++) {
+          result += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        return result;
+      }
 
     getQuiz(studySetId) {
         return fetch('http://localhost:5000/studysets/' + studySetId)
