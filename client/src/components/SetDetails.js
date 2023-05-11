@@ -58,7 +58,7 @@ function SetDetails() {
 
     return (
         <div>
-            <h1>Set Details for {studySet.name}</h1>
+            <h1 style={{ color: 'white' }}>Set Details for: {studySet.name}</h1>
             <h1>{studySet.description}</h1>
             <div className="row">
                 {cards}
