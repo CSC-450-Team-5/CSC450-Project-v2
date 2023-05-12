@@ -16,7 +16,7 @@ export default function JoinGame() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ playerName, lobbyId: gameCode }),
+                body: JSON.stringify({ playerName, playerId: localStorage.getItem("userId"), lobbyId: gameCode }),
             });
 
             if (!response.ok) {
@@ -26,7 +26,7 @@ export default function JoinGame() {
 
             const gameData = await response.json();
             console.log(JSON.stringify(gameData));
-            navigate(`/lobby/${gameData.id}/player`);
+            navigate(`/lobby/${gameData.id}/${localStorage.getItem("userId")}`);
         } catch (error) {
             console.error(error);
             // TODO: Handle error in UI

@@ -109,11 +109,6 @@ class LobbyManager {
         return lobby;
     }
 
-    generatePlayerId() {
-        return uuidv4();
-    }
-
-
 }
 
 module.exports = LobbyManager;
