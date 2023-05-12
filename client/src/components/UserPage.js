@@ -32,7 +32,6 @@ function StudySetCards() {
       .then(response => response.json())
       .then(data => {
         setStudySets(data);
-        // console.log(data);
       })
       .catch(err => console.log(err));
   }, []);
@@ -50,7 +49,7 @@ function StudySetCards() {
     <div className="study-set-container bg-dark text-white p-3 px-5 container-fluid">
       <div className="row">
         <div className="col-12" >
-          <h1>Study Sets</h1>
+          <h1>Your Study Sets</h1>
         </div>
       </div>
       <div className='container-fluid'>
