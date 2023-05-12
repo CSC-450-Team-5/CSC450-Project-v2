@@ -13,9 +13,9 @@ router.post('/create-lobby', async (req, res) => {
 });
 
 router.post('/join-lobby', (req, res) => {
-    const { lobbyId, playerName } = req.body;
+    const { playerName, playerId, lobbyId} = req.body;
     console.log("playerName joining: " + playerName);
-    const playerId = lobbyManager.generatePlayerId();
+    console.log("playerId joining:" + playerId);
     const lobby = lobbyManager.addPlayerToLobby(lobbyId, playerId, playerName);
     res.json(lobby);
 });

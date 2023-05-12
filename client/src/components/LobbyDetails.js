@@ -43,7 +43,7 @@ const HostLobby = () => {
         //check if we are host
         let playerId = "host";
 
-        navigate(`game/${playerId}`);
+        navigate(`/game/${lobbyId}/${playerId}`);
     }
 
     return (
