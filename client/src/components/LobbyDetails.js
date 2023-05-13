@@ -16,7 +16,13 @@ const HostLobby = () => {
             .then(response => response)
             .then(data => setLobby(data))
             .catch(error => console.log(error));
-        fetchPlayerList();
+        // Use setInterval to call the fetchPlayerList function every second
+        const interval = setInterval(() => {
+            fetchPlayerList();
+        }, 1000);
+        
+        // Clean up the interval when component unmounts
+        return () => clearInterval(interval);
     }, [lobbyId]);
 
     async function fetchPlayerList() {
