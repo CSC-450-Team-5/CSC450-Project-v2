@@ -2,7 +2,8 @@ const { get } = require('mongoose');
 
 
 class LobbyManager {
-    constructor() {
+    constructor(io) {
+        this.io = io;
         this.lobbies = [];
     }
 
@@ -10,19 +11,21 @@ class LobbyManager {
         const quiz = await this.getQuiz(studySetId);
         console.log("received from createLobby inside lobby manager: " + JSON.stringify(quiz));
         const lobby = {
-            id: this.generateUniqueId(),
-            gameName,
-            hostName,
-            gameMode,
-            gameLength,
-            players: [],
-            quiz,
+          id: this.generateUniqueId(),
+          gameName,
+          hostName,
+          gameMode,
+          gameLength,
+          players: [],
+          quiz,
+          currentQuestionIndex: -1,
+          currentQuestionTimeoutId: null,
         };
-
+    
         this.lobbies.push(lobby);
-
+    
         return lobby;
-    }
+      }
     
     generateUniqueId() {
         let result = "";
@@ -58,47 +61,94 @@ class LobbyManager {
 
 
     addPlayerToLobby(lobbyId, playerId, playerName) {
-        const lobby = this.lobbies.find((lobby) => lobby.id === lobbyId);
-        if (!lobby) {
-            throw new Error(`Lobby with ID ${lobbyId} not found`);
-        }
+        const lobby = this.getLobby(lobbyId);
 
         if (lobby.players.some((player) => player.id === playerId)) {
             throw new Error(`Player with ID ${playerId} already in lobby`);
         }
 
-        lobby.players.push({ id: playerId, name: playerName });
+        const player = { id: playerId, name: playerName };
+        lobby.players.push(player);
+        this.io.to(lobbyId).emit('player-joined', player);
         return lobby;
     }
 
     getPlayerList(lobbyId) {
-        const lobby = this.lobbies.find((lobby) => lobby.id === lobbyId);
-        if (!lobby) {
-            throw new Error(`Lobby with ID ${lobbyId} not found`);
-        }
+        const lobby = this.getLobby(lobbyId);
 
         return lobby.players;
     }
 
 
     startQuiz(lobbyId, questions) {
-        const lobby = this.lobbies.find((lobby) => lobby.id === lobbyId);
-        if (!lobby) {
-            throw new Error(`Lobby with ID ${lobbyId} not found`);
-        }
-
+        const lobby = this.getLobby(lobbyId);
+    
         if (lobby.players.length < 2) {
-            throw new Error(`At least 2 players required to start quiz`);
+          throw new Error(`At least 2 players required to start quiz`);
         }
-
+    
         lobby.quiz = {
-            questions,
-            currentQuestion: 0,
-            playerResponses: {},
+          questions,
+          playerResponses: {},
         };
-
+    
+        lobby.currentQuestionIndex = -1;
+    
+        this.io.to(lobbyId).emit('game-started', lobby.quiz);
+    
+        setTimeout(() => {
+          this.startNextQuestion(lobbyId);
+        }, 5000); // delay the first question by 5 seconds
+    
         return lobby;
-    }
+      }
+    
+      startNextQuestion(lobbyId) {
+        const lobby = this.getLobby(lobbyId);
+        const { questions } = lobby.quiz;
+    
+        if (lobby.currentQuestionIndex >= questions.length - 1) {
+          // no more questions, game over
+          this.endQuiz(lobbyId);
+          return;
+        }
+    
+        lobby.currentQuestionIndex++;
+    
+        const currentQuestion = questions[lobby.currentQuestionIndex];
+        lobby.quiz.currentQuestion = currentQuestion;
+        lobby.quiz.playerResponses = {};
+    
+        this.io.to(lobbyId).emit('question-started', currentQuestion);
+    
+        lobby.currentQuestionTimeoutId = setTimeout(() => {
+          this.showQuestionResults(lobbyId);
+        }, currentQuestion.timeLimit * 1000); // convert time limit to milliseconds
+      }
+    
+      showQuestionResults(lobbyId) {
+        const lobby = this.getLobby(lobbyId);
+        const { questions } = lobby.quiz;
+        const currentQuestion = questions[lobby.currentQuestionIndex];
+    
+        this.io.to(lobbyId).emit('question-results', lobby.quiz);
+    
+        clearTimeout(lobby.currentQuestionTimeoutId);
+    
+        setTimeout(() => {
+          this.startNextQuestion(lobbyId);
+        }, 5000); // delay the next question by 5 seconds
+      }
+    
+      endQuiz(lobbyId) {
+        const lobby = this.getLobby(lobbyId);
+    
+        this.io.to(lobbyId).emit('game-over', lobby.quiz);
+    
+        // cleanup
+        lobby.currentQuestionIndex = -1;
+        lobby.currentQuestionTimeoutId = null;
+      }
 
     getLobby(lobbyId) {
         const lobby = this.lobbies.find((lobby) => lobby.id === lobbyId);
