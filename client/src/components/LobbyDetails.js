@@ -109,28 +109,23 @@ const PlayerLobby = () => {
     useEffect(() => {
         // Move to the next question when the timer reaches 0
         if (timeRemaining === 0 && currentQuestionIndex < lobby?.quiz?.questions?.length - 1) {
-            handleNextQuestion();
+            handleSelectAnswer();
         } else if (timeRemaining === 0 && currentQuestionIndex === lobby?.quiz?.questions?.length - 1) {
             submitQuiz();
         }
     }, [timeRemaining, currentQuestionIndex, lobby]);
   
-    function handleNextQuestion() {
-        console.log(lobby?.quiz?.questions?.length - 1);
-        console.log(currentQuestionIndex);
-      if (currentQuestionIndex < lobby?.quiz?.questions?.length - 1) {
-        setCurrentQuestionIndex(currentQuestionIndex + 1);
-        console.log(`moving to question ${currentQuestionIndex}`);
-        setTimeRemaining(timeLimit); // reset timer when new question is loaded
-      } else {
-        submitQuiz();
-      }
-    }
-  
     function handleSelectAnswer(questionIndex, answerIndex) {
       // check if question has already been answered
       // if not, add answer to answers array
       // if yes, replace answer in answers array
+      // handle not answered (null) question from time running out
+      if (currentQuestionIndex < lobby?.quiz?.questions?.length - 1) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        setTimeRemaining(timeLimit); // reset timer when new question is loaded
+      } else {
+        submitQuiz();
+      }
     }
   
     function submitQuiz() {
@@ -160,9 +155,6 @@ const PlayerLobby = () => {
                             <button className="btn btn-success col-6" onClick={() => handleSelectAnswer(currentQuestionIndex, 2)}>{currentQuestion.answers[2]}</button>
                             <button className="btn btn-danger col-6" onClick={() => handleSelectAnswer(currentQuestionIndex, 3)}>{currentQuestion.answers[3]}</button>
                         </div>
-                        <button className="btn btn-secondary mt-2 col-12" onClick={handleNextQuestion}>
-                            {currentQuestionIndex < lobby.quiz.questions.length - 1 ? 'Next Question' : 'Submit Quiz'}
-                        </button>
                     </div>
                 </div>
             </>
