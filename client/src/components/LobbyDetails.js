@@ -80,8 +80,10 @@ const PlayerLobby = () => {
     const [answers, setAnswers] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const { lobbyId } = useParams();
-    const timeLimit = 5;
+    const [quizSubmitted, setQuizSubmitted] = useState(false);
+    const timeLimit = 10;
     const [timeRemaining, setTimeRemaining] = useState(timeLimit);
+    const navigate = useNavigate();
   
     useEffect(() => {
       fetch(`http://localhost:5000/quiz/get-lobby/${lobbyId}`)
@@ -108,28 +110,34 @@ const PlayerLobby = () => {
   
     useEffect(() => {
         // Move to the next question when the timer reaches 0
-        if (timeRemaining === 0 && currentQuestionIndex < lobby?.quiz?.questions?.length - 1) {
+        if (timeRemaining === 0 && currentQuestionIndex <= lobby?.quiz?.questions?.length - 1 && !quizSubmitted) {
             handleSelectAnswer();
-        } else if (timeRemaining === 0 && currentQuestionIndex === lobby?.quiz?.questions?.length - 1) {
-            submitQuiz();
         }
     }, [timeRemaining, currentQuestionIndex, lobby]);
   
     function handleSelectAnswer(questionIndex, answerIndex) {
-      // check if question has already been answered
-      // if not, add answer to answers array
-      // if yes, replace answer in answers array
-      // handle not answered (null) question from time running out
-      if (currentQuestionIndex < lobby?.quiz?.questions?.length - 1) {
-        setCurrentQuestionIndex(currentQuestionIndex + 1);
-        setTimeRemaining(timeLimit); // reset timer when new question is loaded
-      } else {
-        submitQuiz();
-      }
+        const answerObj = {
+            userId: localStorage.getItem("userId"),
+            questionIndex: questionIndex,
+            answerIndex: answerIndex,
+            timeRemaining: timeRemaining
+        };
+        console.log(answerObj);
+        setAnswers([...answers, answerObj]);
+        if (currentQuestionIndex < lobby?.quiz?.questions?.length - 1) {
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+            setTimeRemaining(timeLimit); // reset timer when new question is loaded
+        } else {
+            submitQuiz();
+        }
     }
-  
     function submitQuiz() {
-      console.log('submit quiz');
+        if (!quizSubmitted) {
+            setQuizSubmitted(true);
+            console.log('submit quiz');
+            console.log(answers);
+            navigate('/quizResults/${lobbyId}')
+        }
     }
   
     if (!lobby) {
@@ -146,7 +154,7 @@ const PlayerLobby = () => {
                     <h1>{lobby.gameName}</h1>
                     <div key={currentQuestionIndex}>
                         <h3>Question {currentQuestionIndex + 1} <div className='float-right'>{timeRemaining}</div></h3>
-                        <p>{currentQuestion.questionTitle}</p>
+                        <p>{currentQuestion.question}</p>
                         <div className="row">
                             <button className="btn btn-primary col-6" onClick={() => handleSelectAnswer(currentQuestionIndex, 0)}>{currentQuestion.answers[0]}</button>
                             <button className="btn btn-warning col-6" onClick={() => handleSelectAnswer(currentQuestionIndex, 1)}>{currentQuestion.answers[1]}</button>
