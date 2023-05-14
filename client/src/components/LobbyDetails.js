@@ -11,26 +11,18 @@ const HostLobby = () => {
     const [lobby, setLobby] = useState(null);
 
     useEffect(() => {
-        if (!lobby) {
-            return (
-                <div className="text-white">
-                    <p>Loading...</p>
-                </div>
-            );
-        } else {
-            //startPolling();
-            fetch(`/get-lobby/${lobbyId}`)
-                .then(response => response)
-                .then(data => setLobby(data))
-                .catch(error => console.log(error));
-            // Use setInterval to call the fetchPlayerList function every second
-            const interval = setInterval(() => {
-                fetchPlayerList();
-            }, 1000);
-            
-            // Clean up the interval when component unmounts
-            return () => clearInterval(interval);
-        }
+        //startPolling();
+        fetch(`/get-lobby/${lobbyId}`)
+            .then(response => response)
+            .then(data => setLobby(data))
+            .catch(error => console.log(error));
+        // Use setInterval to call the fetchPlayerList function every second
+        const interval = setInterval(() => {
+            fetchPlayerList();
+        }, 1000);
+        
+        // Clean up the interval when component unmounts
+        return () => clearInterval(interval);
     }, [lobbyId]);
 
     async function fetchPlayerList() {
@@ -59,85 +51,19 @@ const HostLobby = () => {
 
         navigate(`/game/${lobbyId}/${playerId}`);
     }
-
-    return (
-        <>
-            <div className="host-lobby-container bg-dark text-white p-3 px-5 container-fluid">
-                <div className="row">
-                    <div className="col-12">
-                        <h1>Host Lobby</h1>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-12">
-                        <h2>Lobby ID: {lobbyId}</h2>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-12">
-                        <h2>Players:</h2>
-                        <ul>
-                            {players.map((player) => (
-                                <li key={player.id}>{player.name}</li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-12">
-                        <button
-                            type="submit"
-                            className="btn btn-primary col-12"
-                            onClick={handleStartGame}
-                        >
-                            Start Game
-                        </button>
-                        <button className='btn btn-primary col-12 mt-3' onClick={fetchPlayerList}>Refresh</button>
-                    </div>
-                </div>
+    if (!lobby) {
+        return (
+            <div className="text-white">
+                <p>Loading...</p>
             </div>
-        </>
-    );
-};
-
-const PlayerLobby = () => {
-    const [lobby, setLobby] = useState(null);
-    const { lobbyId, playerId } = useParams();
-    const [quizStarted, setQuizStarted] = useState(false);
-
-    useEffect(() => {
-        if (!lobby) {
-            return (
-                <div className="text-white">
-                    <p>Loading...</p>
-                </div>
-            );
-        } else {
-            //startPolling();
-            fetch(`/get-lobby/${lobbyId}`)
-                .then(response => response)
-                .then(data => setLobby(data))
-                .catch(error => console.log(error));
-
-            // Listen for gameStarted event from the server
-            // socket.on('gameStarted', () => {
-            //     setQuizStarted(true);
-            // });
-
-            // // Clean up the event listener when component unmounts
-            // return () => {
-            //     socket.off('gameStarted');
-            // };
-        }
-    }, [lobbyId]);
-
-    return (
-        <>
-            {!quizStarted && (
-                <div className="player-lobby-container bg-dark text-white p-3 px-5 container-fluid">
+        );
+    } else {
+        return (
+            <>
+                <div className="host-lobby-container bg-dark text-white p-3 px-5 container-fluid">
                     <div className="row">
                         <div className="col-12">
-                            <h1>Player Lobby</h1>
+                            <h1>Host Lobby</h1>
                         </div>
                     </div>
                     <div className="row">
@@ -147,18 +73,90 @@ const PlayerLobby = () => {
                     </div>
                     <div className="row">
                         <div className="col-12">
-                            <h2>Waiting In Lobby...</h2>
+                            <h2>Players:</h2>
+                            <ul>
+                                {players.map((player) => (
+                                    <li key={player.id}>{player.name}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-12">
+                            <button
+                                type="submit"
+                                className="btn btn-primary col-12"
+                                onClick={handleStartGame}
+                            >
+                                Start Game
+                            </button>
+                            <button className='btn btn-primary col-12 mt-3' onClick={fetchPlayerList}>Refresh</button>
                         </div>
                     </div>
                 </div>
-            )}
-            {quizStarted && (
-                <div>
-                    <h1>Quiz Started!</h1>
-                </div>
-            )}
-        </>
-    );
+            </>
+        );
+    }
+};
+
+const PlayerLobby = () => {
+    const [lobby, setLobby] = useState(null);
+    const { lobbyId, playerId } = useParams();
+    const [quizStarted, setQuizStarted] = useState(false);
+
+    useEffect(() => {
+        //startPolling();
+        fetch(`/get-lobby/${lobbyId}`)
+            .then(response => response)
+            .then(data => setLobby(data))
+            .catch(error => console.log(error));
+
+        // Listen for gameStarted event from the server
+        // socket.on('gameStarted', () => {
+        //     setQuizStarted(true);
+        // });
+
+        // // Clean up the event listener when component unmounts
+        // return () => {
+        //     socket.off('gameStarted');
+        // };
+    }, [lobbyId]);
+    if (!lobby) {
+        return (
+            <div className="text-white">
+                <p>Loading...</p>
+            </div>
+        );
+    } else {
+        return (
+            <>
+                {!quizStarted && (
+                    <div className="player-lobby-container bg-dark text-white p-3 px-5 container-fluid">
+                        <div className="row">
+                            <div className="col-12">
+                                <h1>Player Lobby</h1>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-12">
+                                <h2>Lobby ID: {lobbyId}</h2>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col-12">
+                                <h2>Waiting In Lobby...</h2>
+                            </div>
+                        </div>
+                    </div>
+                )}
+                {quizStarted && (
+                    <div>
+                        <h1>Quiz Started!</h1>
+                    </div>
+                )}
+            </>
+        );
+    }
 };
 
 
