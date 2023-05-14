@@ -78,59 +78,96 @@ const HostLobby = () => {
 const PlayerLobby = () => {
     const [lobby, setLobby] = useState(null);
     const [answers, setAnswers] = useState([]);
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const { lobbyId } = useParams();
-
+    const timeLimit = 5;
+    const [timeRemaining, setTimeRemaining] = useState(timeLimit);
+  
     useEffect(() => {
-        fetch(`http://localhost:5000/quiz/get-lobby/${lobbyId}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                setLobby(data);
-            })
-            .catch(error => console.log(error));
+      fetch(`http://localhost:5000/quiz/get-lobby/${lobbyId}`)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          setLobby(data);
+          setTimeRemaining(timeLimit); // reset timer when new question is loaded
+        })
+        .catch(error => console.log(error));
     }, [lobbyId]);
-
+  
+    useEffect(() => {
+        // Start the timer when the component mounts or when the current question changes
+        let intervalId;
+        if (currentQuestionIndex < lobby?.quiz?.questions?.length) {
+            setTimeRemaining(timeLimit);
+            intervalId = setInterval(() => {
+                setTimeRemaining(timeRemaining => timeRemaining - 1);
+            }, 1000);
+        }
+        return () => clearInterval(intervalId);
+    }, [currentQuestionIndex, lobby]);
+  
+    useEffect(() => {
+        // Move to the next question when the timer reaches 0
+        if (timeRemaining === 0 && currentQuestionIndex < lobby?.quiz?.questions?.length - 1) {
+            handleNextQuestion();
+        } else if (timeRemaining === 0 && currentQuestionIndex === lobby?.quiz?.questions?.length - 1) {
+            submitQuiz();
+        }
+    }, [timeRemaining, currentQuestionIndex, lobby]);
+  
     function handleNextQuestion() {
+        console.log(lobby?.quiz?.questions?.length - 1);
+        console.log(currentQuestionIndex);
+      if (currentQuestionIndex < lobby?.quiz?.questions?.length - 1) {
+        setCurrentQuestionIndex(currentQuestionIndex + 1);
+        console.log(`moving to question ${currentQuestionIndex}`);
+        setTimeRemaining(timeLimit); // reset timer when new question is loaded
+      } else {
+        submitQuiz();
+      }
     }
-
+  
     function handleSelectAnswer(questionIndex, answerIndex) {
-        //check if question has already been answered
-        //if not, add answer to answers array
-        //if yes, replace answer in answers array
+      // check if question has already been answered
+      // if not, add answer to answers array
+      // if yes, replace answer in answers array
     }
-
-
+  
+    function submitQuiz() {
+      console.log('submit quiz');
+    }
+  
     if (!lobby) {
-        return (
-            <div className="text-white">
-                <p>Loading...</p>
-            </div>
-        );
+      return (
+        <div className="text-white">
+          <p>Loading...</p>
+        </div>
+      );
     } else {
+        const currentQuestion = lobby.quiz.questions[currentQuestionIndex];
         return (
             <>
                 <div className="text-white container">
                     <h1>{lobby.gameName}</h1>
-                    {lobby.quiz.questions.map((question, index) => (
-                        <div key={index}>
-                            <h3>Question {index + 1}</h3>
-                            <p>{question.questionTitle}</p>
-                            <div className="row">
-                                <button className="btn btn-primary col-6" onClick={handleSelectAnswer(index, 0)}>{question.answers[0]}</button>
-                                <button className="btn btn-warning col-6" onClick={handleSelectAnswer(index, 1)}>{question.answers[1]}</button>
-                            </div>
-                            <div className="row">
-                                <button className="btn btn-success col-6" onClick={handleSelectAnswer(index, 2)}>{question.answers[2]}</button>
-                                <button className="btn btn-danger col-6" onClick={handleSelectAnswer(index, 3)}>{question.answers[3]}</button>
-                            </div>
-                            <button className="btn btn-secondary mt-2 col-12" onClick={handleNextQuestion}>Next Question</button>
+                    <div key={currentQuestionIndex}>
+                        <h3>Question {currentQuestionIndex + 1} <div className='float-right'>{timeRemaining}</div></h3>
+                        <p>{currentQuestion.questionTitle}</p>
+                        <div className="row">
+                            <button className="btn btn-primary col-6" onClick={() => handleSelectAnswer(currentQuestionIndex, 0)}>{currentQuestion.answers[0]}</button>
+                            <button className="btn btn-warning col-6" onClick={() => handleSelectAnswer(currentQuestionIndex, 1)}>{currentQuestion.answers[1]}</button>
                         </div>
-                    ))}
+                        <div className="row">
+                            <button className="btn btn-success col-6" onClick={() => handleSelectAnswer(currentQuestionIndex, 2)}>{currentQuestion.answers[2]}</button>
+                            <button className="btn btn-danger col-6" onClick={() => handleSelectAnswer(currentQuestionIndex, 3)}>{currentQuestion.answers[3]}</button>
+                        </div>
+                        <button className="btn btn-secondary mt-2 col-12" onClick={handleNextQuestion}>
+                            {currentQuestionIndex < lobby.quiz.questions.length - 1 ? 'Next Question' : 'Submit Quiz'}
+                        </button>
+                    </div>
                 </div>
             </>
         );
     }
-
 };
 
 
