@@ -13,7 +13,6 @@ import SetDetails from "./components/SetDetails";
 import Login from "./components/Login";
 import SignUp from "./components/SignUp";
 import UserPage from "./components/UserPage";
-import Game from "./components/Game";
 import LobbyDetails from "./components/LobbyDetails";
 
 
@@ -58,7 +57,6 @@ const App = () => {
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<SignUp />} />
                         <Route path="/user" element={<UserPage />} />
-                        <Route path="/game/:lobbyId/:playerId" element={<Game />} />
                     </>
                 ) : (
                     <>

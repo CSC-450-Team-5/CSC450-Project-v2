@@ -23,15 +23,15 @@ class LobbyManager {
 
         return lobby;
     }
-    
+
     generateUniqueId() {
         let result = "";
         const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         for (let i = 0; i < 5; i++) {
-          result += characters.charAt(Math.floor(Math.random() * characters.length));
+            result += characters.charAt(Math.floor(Math.random() * characters.length));
         }
         return result;
-      }
+    }
 
     async getQuiz(studySetId) {
         try {
@@ -78,26 +78,6 @@ class LobbyManager {
         }
 
         return lobby.players;
-    }
-
-
-    startQuiz(lobbyId, questions) {
-        const lobby = this.lobbies.find((lobby) => lobby.id === lobbyId);
-        if (!lobby) {
-            throw new Error(`Lobby with ID ${lobbyId} not found`);
-        }
-
-        if (lobby.players.length < 2) {
-            throw new Error(`At least 2 players required to start quiz`);
-        }
-
-        lobby.quiz = {
-            questions,
-            currentQuestion: 0,
-            playerResponses: {},
-        };
-
-        return lobby;
     }
 
     getLobby(lobbyId) {

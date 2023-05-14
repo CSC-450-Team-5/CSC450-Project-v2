@@ -13,16 +13,10 @@ router.post('/create-lobby', async (req, res) => {
 });
 
 router.post('/join-lobby', (req, res) => {
-    const { playerName, playerId, lobbyId} = req.body;
-    console.log("playerName joining: " + playerName);
-    console.log("playerId joining:" + playerId);
+    const { playerName, playerId, lobbyId } = req.body;
+    // console.log("playerName joining: " + playerName);
+    // console.log("playerId joining:" + playerId);
     const lobby = lobbyManager.addPlayerToLobby(lobbyId, playerId, playerName);
-    res.json(lobby);
-});
-
-router.post('/start-quiz', (req, res) => {
-    const { lobbyId, questions } = req.body;
-    const lobby = lobbyManager.startQuiz(lobbyId, questions);
     res.json(lobby);
 });
 
@@ -35,6 +29,7 @@ router.post('/get-player-list', (req, res) => {
 router.get('/get-lobby/:lobbyId', (req, res) => {
     const { lobbyId } = req.params;
     const lobby = lobbyManager.getLobby(lobbyId);
+    console.log("lobby: " + JSON.stringify(lobby));
     res.json(lobby);
 });
 
