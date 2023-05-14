@@ -9,7 +9,19 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000;
 
+// Set up a CORS policy for Socket.IO
+const ioOptions = {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['my-custom-header'],
+    credentials: true
+  }
+};
+
+// Use the CORS middleware for all routes
 app.use(cors());
+
 app.use(express.json());
 
 const uri = process.env.ATLAS_URI;
@@ -20,7 +32,7 @@ connection.once('open', () => {
 });
 
 const server = http.createServer(app);
-const io = socketIO(server);
+const io = socketIO(server, ioOptions);
 
 const userRouter = require('./routes/users');
 const studySetRouter = require('./routes/studysets');
