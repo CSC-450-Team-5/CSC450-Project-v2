@@ -11,18 +11,26 @@ const HostLobby = () => {
     const [lobby, setLobby] = useState(null);
 
     useEffect(() => {
-        //startPolling();
-        fetch(`/get-lobby/${lobbyId}`)
-            .then(response => response)
-            .then(data => setLobby(data))
-            .catch(error => console.log(error));
-        // Use setInterval to call the fetchPlayerList function every second
-        const interval = setInterval(() => {
-            fetchPlayerList();
-        }, 1000);
-        
-        // Clean up the interval when component unmounts
-        return () => clearInterval(interval);
+        if (!lobby) {
+            return (
+                <div className="text-white">
+                    <p>Loading...</p>
+                </div>
+            );
+        } else {
+            //startPolling();
+            fetch(`/get-lobby/${lobbyId}`)
+                .then(response => response)
+                .then(data => setLobby(data))
+                .catch(error => console.log(error));
+            // Use setInterval to call the fetchPlayerList function every second
+            const interval = setInterval(() => {
+                fetchPlayerList();
+            }, 1000);
+            
+            // Clean up the interval when component unmounts
+            return () => clearInterval(interval);
+        }
     }, [lobbyId]);
 
     async function fetchPlayerList() {
@@ -98,21 +106,29 @@ const PlayerLobby = () => {
     const [quizStarted, setQuizStarted] = useState(false);
 
     useEffect(() => {
-        //startPolling();
-        fetch(`/get-lobby/${lobbyId}`)
-            .then(response => response)
-            .then(data => setLobby(data))
-            .catch(error => console.log(error));
+        if (!lobby) {
+            return (
+                <div className="text-white">
+                    <p>Loading...</p>
+                </div>
+            );
+        } else {
+            //startPolling();
+            fetch(`/get-lobby/${lobbyId}`)
+                .then(response => response)
+                .then(data => setLobby(data))
+                .catch(error => console.log(error));
 
-        // Listen for gameStarted event from the server
-        // socket.on('gameStarted', () => {
-        //     setQuizStarted(true);
-        // });
+            // Listen for gameStarted event from the server
+            // socket.on('gameStarted', () => {
+            //     setQuizStarted(true);
+            // });
 
-        // // Clean up the event listener when component unmounts
-        // return () => {
-        //     socket.off('gameStarted');
-        // };
+            // // Clean up the event listener when component unmounts
+            // return () => {
+            //     socket.off('gameStarted');
+            // };
+        }
     }, [lobbyId]);
 
     return (
