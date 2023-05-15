@@ -1,37 +1,45 @@
 const { get } = require('mongoose');
+const Lobby = require('../database/lobby.model');
 
 
 class LobbyManager {
-    constructor() {
-        this.lobbies = [];
-    }
 
     async createLobby(gameName, hostName, studySetId, gameMode, gameLength) {
         const quiz = await this.getQuiz(studySetId);
-        console.log("received from createLobby inside lobby manager: " + JSON.stringify(quiz));
-        const lobby = {
-            id: this.generateUniqueId(),
-            gameName,
-            hostName,
-            gameMode,
-            gameLength,
+
+        const lobby = new Lobby({
+            lobby_code: this.generateUniqueId(),
+            creator_id: hostName,
+            host_name: hostName,
+            game_name: gameName,
+            game_mode: gameMode,
+            game_length: gameLength,
             players: [],
             quiz,
-        };
+            completedQuizzes: []
+        });
 
-        this.lobbies.push(lobby);
+        console.log("created lobby: " + JSON.stringify(lobby));
+
 
         return lobby;
     }
-    
+    async addCompletedQuiz(lobbyId, completedQuiz) {
+        const lobby = await this.getLobby(lobbyId);
+
+        lobby.completedQuizzes.push(completedQuiz);
+
+        await lobby.save();
+    }
+
     generateUniqueId() {
         let result = "";
         const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         for (let i = 0; i < 5; i++) {
-          result += characters.charAt(Math.floor(Math.random() * characters.length));
+            result += characters.charAt(Math.floor(Math.random() * characters.length));
         }
         return result;
-      }
+    }
 
     async getQuiz(studySetId) {
         try {
@@ -55,57 +63,35 @@ class LobbyManager {
         }
     }
 
-
-
-    addPlayerToLobby(lobbyId, playerId, playerName) {
-        const lobby = this.lobbies.find((lobby) => lobby.id === lobbyId);
-        if (!lobby) {
-            throw new Error(`Lobby with ID ${lobbyId} not found`);
-        }
+    async addPlayerToLobby(gameId, playerId, playerName) {
+        const lobby = await this.getLobbyFromGameCode(gameId);
+        //console.log("adding player to lobby: " + playerId + " " + playerName);
 
         if (lobby.players.some((player) => player.id === playerId)) {
             throw new Error(`Player with ID ${playerId} already in lobby`);
         }
 
         lobby.players.push({ id: playerId, name: playerName });
+        //console.log("added player to lobby: " + JSON.stringify(lobby.players));
+
         return lobby;
     }
 
-    getPlayerList(lobbyId) {
-        const lobby = this.lobbies.find((lobby) => lobby.id === lobbyId);
-        if (!lobby) {
-            throw new Error(`Lobby with ID ${lobbyId} not found`);
-        }
-
+    async getPlayerList(lobbyId) {
+        const lobby = await this.getLobby(lobbyId);
+        // console.log("Found players: " + JSON.stringify(lobby.players));
         return lobby.players;
     }
 
-
-    startQuiz(lobbyId, questions) {
-        const lobby = this.lobbies.find((lobby) => lobby.id === lobbyId);
-        if (!lobby) {
-            throw new Error(`Lobby with ID ${lobbyId} not found`);
-        }
-
-        if (lobby.players.length < 2) {
-            throw new Error(`At least 2 players required to start quiz`);
-        }
-
-        lobby.quiz = {
-            questions,
-            currentQuestion: 0,
-            playerResponses: {},
-        };
-
+    async getLobby(lobbyId) {
+        const lobby = await Lobby.findById(lobbyId);
+        if (!lobby) throw new Error('Lobby not found');
         return lobby;
     }
 
-    getLobby(lobbyId) {
-        const lobby = this.lobbies.find((lobby) => lobby.id === lobbyId);
-        if (!lobby) {
-            throw new Error(`Lobby with ID ${lobbyId} not found`);
-        }
-
+    async getLobbyFromGameCode(gameCode) {
+        const lobby = await Lobby.findOne({ lobby_code: gameCode });
+        if (!lobby) throw new Error('Lobby not found');
         return lobby;
     }
 
