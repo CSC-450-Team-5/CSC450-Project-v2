@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -10,34 +10,35 @@ const QuestionForm = (props) => {
             {/* Question title row */}
             <div className="row">
                 <div className="col-6 mb-2">
-                    <label htmlFor={'QuestionTitle' + props.qid} className="float-left">Question Title</label>
-                    <input type="text" className="form-control" id={'QuestionTitle' + props.qid} placeholder="Enter Question title" />
+                    <label htmlFor={'QuestionTitle' + props.qid} className="float-start">Question Title</label>
+                    <input type="text" className="form-control" id={'QuestionTitle' + props.qid} placeholder="Enter Question title" value={"Question " + (props.qid + 1)} />
                 </div>
             </div>
             {/* Question row */}
             <div className="row">
                 <div className="col mb-2">
-                    <label htmlFor={'Question' + props.qid} className="float-left">Question</label>
+                    <label htmlFor={'Question' + props.qid} className="float-start">Question</label>
                     <input type="text" className="form-control" id={'Question' + props.qid} placeholder="Enter Question" />
                 </div >
             </div>
             {/* Question performance indicator row labels*/}
             <div className="row">
                 <div className="col mb-2">
-                    <label htmlFor={'PIList' + props.qid} className="float-left">Learning Objective</label>
+                    <label htmlFor={'PIList' + props.qid} className="float-start">Learning Objective</label>
                     <select defaultValue={[]} className="form-control" name={'PIList' + props.qid} id={'PIList' + props.qid} multiple={true}>
-                        {/* needs to loop through and put all PIs as options from host user using user id from session */}
-                        <option value="test 1">Test</option>
-                        <option value="test 2">Test 2</option>
-                        <option value="test 3">Test 3</option>
+                        {props.currentUser && props.currentUser.PIs.map((PI) => (
+                            <option value={PI} key={PI}>
+                            {PI}
+                            </option>
+                        ))}
                     </select>
                 </div>
             </div>
             {/* Question answers row labels*/}
             <div className="row">
                 <div className="col-12">
-                    <label htmlFor="QuestionAnswer" className="float-left">Question Answers</label>
-                    <label htmlFor="QuestionAnswer" className="float-right">Correct Answer</label>
+                    <label htmlFor="QuestionAnswer" className="float-start">Question Answers</label>
+                    <label htmlFor="QuestionAnswer" className="float-end">Correct Answer</label>
                 </div>
             </div>
             {/* Question answers row inputs*/}
@@ -47,7 +48,7 @@ const QuestionForm = (props) => {
                 </div>
                 <div className="col-2">
                     <div className="form-check">
-                        <input className="form-check-input" type="radio" name={'gridRadios' + props.qid} value="option1" />
+                        <input className="form-check-input float-end m-3" type="radio" name={'gridRadios' + props.qid} value="option1" />
                     </div>
                 </div>
             </div>
@@ -57,7 +58,7 @@ const QuestionForm = (props) => {
                 </div>
                 <div className="col-2">
                     <div className="form-check">
-                        <input className="form-check-input" type="radio" name={'gridRadios' + props.qid} value="option2" />
+                        <input className="form-check-input float-end m-3" type="radio" name={'gridRadios' + props.qid} value="option2" />
                     </div>
                 </div>
             </div>
@@ -67,7 +68,7 @@ const QuestionForm = (props) => {
                 </div>
                 <div className="col-2">
                     <div className="form-check">
-                        <input className="form-check-input" type="radio" name={'gridRadios' + props.qid} value="option3" />
+                        <input className="form-check-input float-end m-3" type="radio" name={'gridRadios' + props.qid} value="option3" />
                     </div>
                 </div>
             </div>
@@ -77,7 +78,7 @@ const QuestionForm = (props) => {
                 </div>
                 <div className="col-2">
                     <div className="form-check">
-                        <input className="form-check-input" type="radio" name={'gridRadios' + props.qid} value="option4" />
+                        <input className="form-check-input float-end m-3" type="radio" name={'gridRadios' + props.qid} value="option4" />
                     </div>
                 </div>
             </div>
@@ -92,11 +93,24 @@ function StudySetForm() {
     const [questionList, setQuestionList] = useState([]);
     const [getQuestionID, setQuestionID] = useState(0);
     const [skipQuestionIds, setSkipQuestionIds] = useState([]);
+    const [currentUser, setCurrentUser] = useState(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        fetch(`http://localhost:5000/users/${localStorage.getItem("userId")}`)
+          .then(response => response.json())
+          .then(data => {
+            console.log("response data:", data);
+            setCurrentUser(data);
+          })
+          .catch(err => {
+            console.log("fetch error:", err);
+          });
+      }, []);
 
     const onAddQuestionBtnClick = event => {
         event.preventDefault();
-        setQuestionList(questionList.concat(<QuestionForm qid={getQuestionID} key={questionList.length} removeQuestion={onRemoveQuestionBtnClick} />));
+        setQuestionList(questionList.concat(<QuestionForm qid={getQuestionID} key={questionList.length} removeQuestion={onRemoveQuestionBtnClick} currentUser={currentUser} />));
         setQuestionID(getQuestionID + 1);
     };
 
@@ -197,23 +211,24 @@ function StudySetForm() {
             <form onSubmit={handleSubmit}>
                 <div className="row">
                     <div className="col-6 mb-3">
-                        <label htmlFor="setTitle" className="float-left">Title</label>
+                        <label htmlFor="setTitle" className="float-start">Title</label>
                         <input type="text" className="form-control" id="setTitle" placeholder="Enter title" />
                     </div>
                 </div>
                 <div className="row">
                     <div className="col mb-5">
-                        <label htmlFor="description" className="float-left">Description</label>
+                        <label htmlFor="description" className="float-start">Description</label>
                         <textarea className="form-control" id="description" rows="3" placeholder="Enter description"></textarea>
                     </div>
                 </div>
 
                 <div className="form-group">
                     {questionList}
-                    <button className="btn btn-success float-right mt-3" onClick={onAddQuestionBtnClick}>Add Question</button>
-                </div>
-
-                <button type="submit" className="btn btn-primary float-left">Submit</button>
+                    <div className="mt-3 d-flex">
+                        <button type="submit" className="btn btn-primary m-1">Submit</button>
+                        <button className="btn btn-success m-1" onClick={onAddQuestionBtnClick}>Add Question</button>
+                    </div>
+                </div>                
             </form>
         </div>
     );

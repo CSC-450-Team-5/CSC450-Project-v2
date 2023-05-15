@@ -63,6 +63,8 @@ function StudySetCards() {
 
 const UserPage = () => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [performanceIndicator, setPerformanceIndicator] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch(`http://localhost:5000/users/${localStorage.getItem("userId")}`)
@@ -76,12 +78,72 @@ const UserPage = () => {
       });
   }, []);
 
+  const handleSubmit = async event => {
+    if (currentUser.PIs) {
+      currentUser.PIs = currentUser.PIs.concat(performanceIndicator);
+    } else {
+      currentUser.PIs = [`${performanceIndicator}`];
+    }
+    console.log(currentUser.PIs);
+    event.preventDefault();
+    const requestBody = {
+      username: currentUser.username,
+      password: currentUser.password,
+      PIs: currentUser.PIs,
+    };
+  
+    const response = await fetch(`http://localhost:5000/users/update/${localStorage.getItem('userId')}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+    });
+    const data = await response.json();
+  
+    setCurrentUser({
+      ...currentUser,
+      PIs: requestBody.PIs,
+    });
+  
+    setPerformanceIndicator('');
+  
+    navigate(`/user`);
+  };
+
   return (
     <div className="bg-dark text-white p-3">
       <div className="container">
         <div className="row">
           <div className="col-12 text-center">
             {currentUser ? <h1>{currentUser.username}</h1> : <p>Loading...</p>}
+          </div>
+          <div className='row'>
+            <div className="col-12 col-sm-8 col-md-6 mb-3 mx-auto border rounded p-2">
+              <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <label htmlFor="performanceIndicator">Learning Objectives</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="performanceIndicator"
+                        required
+                        placeholder="Enter new learning objective name"
+                        value={performanceIndicator}
+                        onChange={event => setPerformanceIndicator(event.target.value)}
+                    />
+                    <div className="form-group">
+                        <button
+                            type="submit"
+                            className="btn btn-primary col-12"
+                            onClick={handleSubmit}
+                        >
+                            Add Learning Objective
+                        </button>
+                    </div>
+                </div>
+              </form>
+            </div>
           </div>
           <div>{StudySetCards()}</div>
         </div>

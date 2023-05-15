@@ -66,6 +66,7 @@ export default function QuizResults() {
                                 <h6>Question: {question.question}</h6>
                                 <p>Your Answer: {quizResults.answers.find(answer => answer.questionIndex === qIndex)?.answer ?? "Unanswered"}</p>
                                 <p>Correct Answer: {question.correctAnswer}</p>
+                                <p>Learning Objective(s): {question.PIList}</p>
                             </div>
                         ))}
                     </div>
