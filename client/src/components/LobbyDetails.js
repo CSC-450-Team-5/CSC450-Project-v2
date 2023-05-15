@@ -133,6 +133,7 @@ const PlayerLobby = () => {
             userId: localStorage.getItem("userId"),
             questionIndex: questionIndex,
             answerIndex: answerIndex,
+            answer: lobby.quiz.questions[questionIndex].answers[answerIndex],
             timeRemaining: timeRemaining,
         };
         setAnswers((prevAnswers) => {

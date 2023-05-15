@@ -8,6 +8,7 @@ const CompletedQuizSchema = new Schema({
         userId: String,
         questionIndex: Number,
         answerIndex: Number,
+        answer: String,
         timeRemaining: Number
     }]
 });

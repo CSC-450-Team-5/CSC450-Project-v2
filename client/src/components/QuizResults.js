@@ -5,6 +5,7 @@ export default function QuizResults() {
     const { resultId } = useParams();
     const [quizResults, setQuizResults] = useState(null);
     const [lobby, setLobby] = useState(null);
+    const [players, setPlayers] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -26,6 +27,7 @@ export default function QuizResults() {
                     })
                     .then(data => {
                         setLobby(data);
+                        setPlayers(data.players);
                     })
                     .catch(error => {
                         console.error(error);
@@ -48,6 +50,8 @@ export default function QuizResults() {
         console.log("quizResults", quizResults);
         console.log("lobby", lobby);
         console.log("quiz", lobby.quiz);
+        console.log("players", players)
+        console.log(quizResults.answers.find(answer => answer.questionIndex === 0).answer);
         return (
             <div className="container mt-5">
                 <h1 className="text-center mb-4">Quiz Results</h1>
@@ -59,8 +63,8 @@ export default function QuizResults() {
                         <h5 className="card-title">{lobby.quiz.name}<p className='text-right'>Score: {quizResults.score}</p></h5>
                         {lobby.quiz.questions.map((question, qIndex) => (
                             <div key={qIndex}>
-                                <h6>Question: {question.text}</h6>
-                                <p>Your Answer: {question.playerAnswer}</p>
+                                <h6>Question: {question.question}</h6>
+                                <p>Your Answer: {quizResults.answers.find(answer => answer.questionIndex === qIndex)?.answer ?? "Unanswered"}</p>
                                 <p>Correct Answer: {question.correctAnswer}</p>
                             </div>
                         ))}
