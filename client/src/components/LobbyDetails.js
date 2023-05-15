@@ -126,7 +126,7 @@ const PlayerLobby = () => {
             const newAnswers = [...prevAnswers, answerObj];
 
             if (currentQuestionIndex < lobby?.quiz?.questions?.length - 1) {
-                setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+                setCurrentQuestionIndex(currentQuestionIndex + 1);
                 setTimeRemaining(timeLimit); // reset timer when new question is loaded
             } else {  // that was last question
                 setQuizSubmitted(true);
