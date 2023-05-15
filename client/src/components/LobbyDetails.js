@@ -8,9 +8,12 @@ const HostLobby = () => {
     const [lobby, setLobby] = useState(null);
 
     useEffect(() => {
-        fetch(`/get-lobby/${lobbyId}`)
-            .then(response => response)
-            .then(data => setLobby(data))
+        fetch(`http://localhost:5000/quiz/get-lobby/${lobbyId}`)
+            .then(response => response.json())
+            .then(data => {
+                setLobby(data);
+                console.log(data);
+            })
             .catch(error => console.log(error));
         // Use setInterval to call the fetchPlayerList function every second
         const interval = setInterval(() => {
@@ -56,17 +59,21 @@ const HostLobby = () => {
                     </div>
                     <div className="row">
                         <div className="col-12">
-                            <h2>Lobby ID: {lobbyId}</h2>
+                            <h2>Lobby ID: {lobby.lobby_code}</h2>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-12">
                             <h2>Players:</h2>
-                            <ul>
-                                {players.map((player) => (
-                                    <li key={player.id}>{player.name}</li>
-                                ))}
-                            </ul>
+                            {players.length > 0 ? (
+                                <ul>
+                                    {players.map((player) => (
+                                        <li key={player.id}>{player.name}</li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p>No players yet.</p>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -79,81 +86,100 @@ const PlayerLobby = () => {
     const [lobby, setLobby] = useState(null);
     const [answers, setAnswers] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const { lobbyId } = useParams();
+    const { lobbyId, playerId } = useParams();
     const [quizSubmitted, setQuizSubmitted] = useState(false);
-    const timeLimit = 10;
+    const timeLimit = 20;
     const [timeRemaining, setTimeRemaining] = useState(timeLimit);
     const navigate = useNavigate();
-  
+
     useEffect(() => {
-      fetch(`http://localhost:5000/quiz/get-lobby/${lobbyId}`)
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-          setLobby(data);
-          setTimeRemaining(timeLimit); // reset timer when new question is loaded
-        })
-        .catch(error => console.log(error));
+        fetch(`http://localhost:5000/quiz/get-lobby/${lobbyId}`)
+            .then((response) => response.json())
+            .then((data) => {
+                setLobby(data);
+            })
+            .catch((error) => console.log(error));
     }, [lobbyId]);
-  
+
     useEffect(() => {
-        // Start the timer when the component mounts or when the current question changes
         let intervalId;
-        if (currentQuestionIndex < lobby?.quiz?.questions?.length) {
+        if (currentQuestionIndex < lobby?.quiz?.questions?.length - 1) {
             setTimeRemaining(timeLimit);
             intervalId = setInterval(() => {
-                setTimeRemaining(timeRemaining => timeRemaining - 1);
+                setTimeRemaining((timeRemaining) => timeRemaining - 1);
             }, 1000);
         }
         return () => clearInterval(intervalId);
-    }, [currentQuestionIndex, lobby]);
-  
+    }, [currentQuestionIndex]);
+
     useEffect(() => {
-        // Move to the next question when the timer reaches 0
-        if (timeRemaining === 0 && currentQuestionIndex <= lobby?.quiz?.questions?.length - 1 && !quizSubmitted) {
-            handleSelectAnswer();
+        if (
+            timeRemaining <= 0 &&
+            currentQuestionIndex < lobby?.quiz?.questions?.length - 1 &&
+            !quizSubmitted
+        ) {
+            handleSelectAnswer(currentQuestionIndex, -1);
         }
-    }, [timeRemaining, currentQuestionIndex, lobby]);
-  
+    }, [timeRemaining]);
+
     function handleSelectAnswer(questionIndex, answerIndex) {
+
+        console.log("handleSelectAnswer called", { questionIndex, answerIndex });
+        if (answerIndex === -1) {
+            // ran out of time
+            answerIndex = null;
+        }
         const answerObj = {
             userId: localStorage.getItem("userId"),
             questionIndex: questionIndex,
             answerIndex: answerIndex,
-            timeRemaining: timeRemaining
+            timeRemaining: timeRemaining,
         };
-        console.log(answerObj);
-        setAnswers([...answers, answerObj]);
-        if (currentQuestionIndex < lobby?.quiz?.questions?.length - 1) {
-            setCurrentQuestionIndex(currentQuestionIndex + 1);
-            setTimeRemaining(timeLimit); // reset timer when new question is loaded
-        } else {
-            submitQuiz();
-        }
+        setAnswers((prevAnswers) => {
+            const newAnswers = [...prevAnswers, answerObj];
+
+            if (currentQuestionIndex < lobby?.quiz?.questions?.length - 1) {
+                setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+                setTimeRemaining(timeLimit); // reset timer when new question is loaded
+            } else {  // that was last question
+                setQuizSubmitted(true);
+                //console.log(newAnswers);
+                fetch(`http://localhost:5000/quiz/submit-quiz`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ lobbyId, playerId, answers: newAnswers }),
+                }).then((response) => {
+                    if (!response.ok) {
+                        throw new Error(response.statusText);
+                    }
+                    return response.json();
+                }).then((data) => {
+                    console.log('quiz results id: ' + data.resultsId);
+                    navigate(`/results/${data.resultsId}`);
+                }
+                ).catch((error) => {
+                    console.error(error);
+                });
+            }
+            return newAnswers;
+        });
     }
-    function submitQuiz() {
-        if (!quizSubmitted) {
-            setQuizSubmitted(true);
-            console.log('submit quiz');
-            console.log(answers);
-            navigate('/quizResults/${lobbyId}')
-        }
-    }
-  
+
     if (!lobby) {
-      return (
-        <div className="text-white">
-          <p>Loading...</p>
-        </div>
-      );
+        return (
+            <div className="text-white">
+                <p>Loading...</p>
+            </div>
+        );
     } else {
-        const currentQuestion = lobby.quiz.questions[currentQuestionIndex];
+        var currentQuestion = lobby.quiz.questions[currentQuestionIndex];
+        console.log(currentQuestion);
         return (
             <>
                 <div className="text-white container">
                     <h1>{lobby.gameName}</h1>
                     <div key={currentQuestionIndex}>
-                        <h3>Question {currentQuestionIndex + 1} <div className='float-right'>{timeRemaining}</div></h3>
+                        <h3>Question {currentQuestionIndex + 1} <div className='float-right'>Seconds remaining: {timeRemaining}</div></h3>
                         <p>{currentQuestion.question}</p>
                         <div className="row">
                             <button className="btn btn-primary col-6" onClick={() => handleSelectAnswer(currentQuestionIndex, 0)}>{currentQuestion.answers[0]}</button>
@@ -172,7 +198,7 @@ const PlayerLobby = () => {
 
 
 export default function LobbyDetails() {
-    const { lobbyId, playerId } = useParams();
+    const { playerId } = useParams();
 
     if (playerId === "host") {
         return (

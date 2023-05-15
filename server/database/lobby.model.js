@@ -9,10 +9,10 @@ const lobbySchema = new Schema({
     host_name: { type: String, required: true, unique: false, trim: true },
     game_name: { type: String, required: true, unique: false, trim: true },
     game_mode: { type: String, required: true, unique: false, trim: true },
-    game_length: {type: Number, required: true, unique: false, trim: true },
-    players: { type: Object, required: true },
+    game_length: { type: Number, required: true, unique: false, trim: true },
+    players: [{ type: Object, required: true }],
     quiz: { type: Object, required: true }, // stores questions as a json object
-    questionAnswers: { type: Object, required: true } // stores questions as a json object
+    completedQuizzes: [{ type: Schema.Types.ObjectId, ref: 'CompletedQuiz' }]
 }, {
     timestamps: true,
 });

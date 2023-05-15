@@ -58,11 +58,11 @@ export default function HostLobbyForm() {
             body: JSON.stringify(requestBody),
         });
         const data = await response.json();
-        console.log('received from lobby id server: ' + data.id);
+        console.log('received lobby id: ' + data._id);
         console.log('received from lobby: ' + JSON.stringify(data));
 
         //redirect to lobby page
-        navigate(`/lobby/${data.id}/host`);
+        navigate(`/lobby/${data._id}/host`);
     };
 
     return (
