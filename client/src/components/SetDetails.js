@@ -7,7 +7,7 @@ const QuestionsCard = ({ questions, handleAnswerClick }) => {
             {questions &&
                 questions.map((question, index) => (
                     <div key={index} className="col-12">
-                        <div className="card">
+                        <div className="card m-2">
                             <div className="card-header">{question.questionTitle}</div>
                             <div className="card-body">
                                 <p>{question.question}</p>
