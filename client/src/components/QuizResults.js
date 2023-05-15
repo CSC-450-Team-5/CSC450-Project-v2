@@ -52,6 +52,15 @@ export default function QuizResults() {
         console.log("quiz", lobby.quiz);
         console.log("players", players)
         console.log(quizResults.answers.find(answer => answer.questionIndex === 0).answer);
+        // calculate score here
+        const timeLimit = 20;
+        const totalScore = lobby.quiz.questions.reduce((accumulator, question, qIndex) => {
+            const playerAnswer = quizResults.answers.find(answer => answer.questionIndex === qIndex)?.answer;
+            if (playerAnswer === question.correctAnswer) {
+                return accumulator + (100 * (quizResults.answers.find(answer => answer.questionIndex === qIndex).timeRemaining)/timeLimit);
+            }
+            return accumulator;
+        }, 0);
         return (
             <div className="container mt-5">
                 <h1 className="text-center mb-4">Quiz Results</h1>
@@ -60,7 +69,7 @@ export default function QuizResults() {
                         <h2>{quizResults.playerName}</h2>
                     </div>
                     <div className="card-body">
-                        <h5 className="card-title">{lobby.quiz.name}<p className='text-right'>Score: {quizResults.score}</p></h5>
+                        <h5 className="card-title">{lobby.quiz.name}<p className='text-right'>Score: {totalScore}</p></h5>
                         {lobby.quiz.questions.map((question, qIndex) => (
                             <div key={qIndex}>
                                 <h6>Question: {question.question}</h6>
