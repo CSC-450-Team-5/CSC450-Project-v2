@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const HostLobby = () => {
-    const [players, setPlayers] = useState(null);
+    const [players, setPlayers] = useState([]);
     const { lobbyId } = useParams();
     const navigate = useNavigate();
     const [lobby, setLobby] = useState(null);
@@ -35,8 +35,8 @@ const HostLobby = () => {
             }
             return response.json();
         }).then(data => {
-            console.log('Got playerlist: ' + data.players);
-            setPlayers(data.players);
+            console.log('Got playerlist: ' + data);
+            setPlayers(data);
         }).catch((error) => {
             console.error(error);
         });
