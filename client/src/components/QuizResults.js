@@ -69,10 +69,11 @@ export default function QuizResults() {
                         <h2>{quizResults.playerName}</h2>
                     </div>
                     <div className="card-body">
-                        <h5 className="card-title">{lobby.quiz.name}<p className='text-right'>Score: {totalScore}</p></h5>
+                        <h5 className="card-title">{lobby.quiz.name}<p className='text-right'>Total Score: {totalScore}</p></h5>
                         {lobby.quiz.questions.map((question, qIndex) => (
                             <div key={qIndex}>
-                                <h6>Question: {question.question}</h6>
+                                <h6>{question.questionTitle}</h6>
+                                <h6>{question.question}</h6>
                                 <p>Your Answer: {quizResults.answers.find(answer => answer.questionIndex === qIndex)?.answer ?? "Unanswered"}</p>
                                 <p>Correct Answer: {question.correctAnswer}</p>
                                 <p>Learning Objective(s): {question.PIList}</p>

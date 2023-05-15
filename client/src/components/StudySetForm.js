@@ -24,7 +24,7 @@ const QuestionForm = (props) => {
                     <input type="text" onChange={handleQuestionChange} className="form-control" id={'Question' + props.qid} placeholder="Enter Question" />
                 </div >
             </div>
-            {/* Question performance indicator row labels
+            {/* Question performance indicator row labels */}
             <div className="row">
                 <div className="col mb-2">
                     <label htmlFor={'PIList' + props.qid} className="float-start">Learning Objective</label>
@@ -36,7 +36,7 @@ const QuestionForm = (props) => {
                         ))}
                     </select>
                 </div>
-            </div> */}
+            </div>
             {/* Question answers row labels*/}
             <div className="row">
                 <div className="col-12">
@@ -165,7 +165,7 @@ function StudySetForm() {
             const correctAnswerId = getCorrectAnswerStringFromQNum(i);
             const correctAnswer = document.getElementById(correctAnswerId).value;
 
-            // const PIList = [...document.getElementById("PIList" + i).selectedOptions].map(o => o.value)
+            const PIList = [...document.getElementById("PIList" + i).selectedOptions].map(o => o.value)
 
             // Create question object and add to questions array
             const questionObj = {
@@ -173,7 +173,7 @@ function StudySetForm() {
                 question,
                 answers,
                 correctAnswer,
-                // PIList
+                PIList
             };
             questions.push(questionObj);
         }
