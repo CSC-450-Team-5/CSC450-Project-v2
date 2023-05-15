@@ -33,6 +33,7 @@ router.post('/get-player-list', (req, res) => {
     const lobbyId = req.body.lobbyId;
     const playerList = lobbyManager.getPlayerList(lobbyId);
     res.json(playerList);
+    console.log(res.json(playerList));
 });
 
 router.get('/get-lobby/:lobbyId', async (req, res) => {
