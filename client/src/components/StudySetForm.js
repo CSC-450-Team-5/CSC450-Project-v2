@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const QuestionForm = (props) => {
+    function handleQuestionChange(event) {
+        //do nothing
+    }
 
     return <>
         <div className="border rounded p-2">
@@ -11,17 +14,17 @@ const QuestionForm = (props) => {
             <div className="row">
                 <div className="col-6 mb-2">
                     <label htmlFor={'QuestionTitle' + props.qid} className="float-start">Question Title</label>
-                    <input type="text" className="form-control" id={'QuestionTitle' + props.qid} placeholder="Enter Question title" value={"Question " + (props.qid + 1)} />
+                    <input type="text" onChange={handleQuestionChange} className="form-control" id={'QuestionTitle' + props.qid} placeholder="Enter Question title" value={"Question " + (props.qid + 1)} />
                 </div>
             </div>
             {/* Question row */}
             <div className="row">
                 <div className="col mb-2">
                     <label htmlFor={'Question' + props.qid} className="float-start">Question</label>
-                    <input type="text" className="form-control" id={'Question' + props.qid} placeholder="Enter Question" />
+                    <input type="text" onChange={handleQuestionChange} className="form-control" id={'Question' + props.qid} placeholder="Enter Question" />
                 </div >
             </div>
-            {/* Question performance indicator row labels*/}
+            {/* Question performance indicator row labels
             <div className="row">
                 <div className="col mb-2">
                     <label htmlFor={'PIList' + props.qid} className="float-start">Learning Objective</label>
@@ -33,7 +36,7 @@ const QuestionForm = (props) => {
                         ))}
                     </select>
                 </div>
-            </div>
+            </div> */}
             {/* Question answers row labels*/}
             <div className="row">
                 <div className="col-12">
@@ -44,41 +47,41 @@ const QuestionForm = (props) => {
             {/* Question answers row inputs*/}
             <div className="row">
                 <div className="col-10">
-                    <input type="text" className="form-control mb-1" id={'QuestionAnswer1,' + props.qid} placeholder="Enter Question answer" />
+                    <input type="text" onChange={handleQuestionChange} className="form-control mb-1" id={'QuestionAnswer1,' + props.qid} placeholder="Enter Question answer" />
                 </div>
                 <div className="col-2">
                     <div className="form-check">
-                        <input className="form-check-input float-end m-3" type="radio" name={'gridRadios' + props.qid} value="option1" />
+                        <input className="form-check-input float-end m-3" onChange={handleQuestionChange} type="radio" name={'gridRadios' + props.qid} value="option1" />
                     </div>
                 </div>
             </div>
             <div className="row">
                 <div className="col-10">
-                    <input type="text" className="form-control mb-1" id={'QuestionAnswer2,' + props.qid} placeholder="Enter Question answer" />
+                    <input type="text" onChange={handleQuestionChange} className="form-control mb-1" id={'QuestionAnswer2,' + props.qid} placeholder="Enter Question answer" />
                 </div>
                 <div className="col-2">
                     <div className="form-check">
-                        <input className="form-check-input float-end m-3" type="radio" name={'gridRadios' + props.qid} value="option2" />
+                        <input onChange={handleQuestionChange} className="form-check-input float-end m-3" type="radio" name={'gridRadios' + props.qid} value="option2" />
                     </div>
                 </div>
             </div>
             <div className="row">
                 <div className="col-10">
-                    <input type="text" className="form-control mb-1" id={'QuestionAnswer3,' + props.qid} placeholder="Enter Question answer" />
+                    <input type="text" onChange={handleQuestionChange} className="form-control mb-1" id={'QuestionAnswer3,' + props.qid} placeholder="Enter Question answer" />
                 </div>
                 <div className="col-2">
                     <div className="form-check">
-                        <input className="form-check-input float-end m-3" type="radio" name={'gridRadios' + props.qid} value="option3" />
+                        <input onChange={handleQuestionChange} className="form-check-input float-end m-3" type="radio" name={'gridRadios' + props.qid} value="option3" />
                     </div>
                 </div>
             </div>
             <div className="row">
                 <div className="col-10">
-                    <input type="text" className="form-control mb-1" id={'QuestionAnswer4,' + props.qid} placeholder="Enter Question answer" />
+                    <input onChange={handleQuestionChange} type="text" className="form-control mb-1" id={'QuestionAnswer4,' + props.qid} placeholder="Enter Question answer" />
                 </div>
                 <div className="col-2">
                     <div className="form-check">
-                        <input className="form-check-input float-end m-3" type="radio" name={'gridRadios' + props.qid} value="option4" />
+                        <input onChange={handleQuestionChange} className="form-check-input float-end m-3" type="radio" name={'gridRadios' + props.qid} value="option4" />
                     </div>
                 </div>
             </div>
@@ -98,15 +101,15 @@ function StudySetForm() {
 
     useEffect(() => {
         fetch(`http://localhost:5000/users/${localStorage.getItem("userId")}`)
-          .then(response => response.json())
-          .then(data => {
-            console.log("response data:", data);
-            setCurrentUser(data);
-          })
-          .catch(err => {
-            console.log("fetch error:", err);
-          });
-      }, []);
+            .then(response => response.json())
+            .then(data => {
+                console.log("response data:", data);
+                setCurrentUser(data);
+            })
+            .catch(err => {
+                console.log("fetch error:", err);
+            });
+    }, []);
 
     const onAddQuestionBtnClick = event => {
         event.preventDefault();
@@ -162,7 +165,7 @@ function StudySetForm() {
             const correctAnswerId = getCorrectAnswerStringFromQNum(i);
             const correctAnswer = document.getElementById(correctAnswerId).value;
 
-            const PIList = [...document.getElementById("PIList" + i).selectedOptions].map(o => o.value)
+            // const PIList = [...document.getElementById("PIList" + i).selectedOptions].map(o => o.value)
 
             // Create question object and add to questions array
             const questionObj = {
@@ -170,7 +173,7 @@ function StudySetForm() {
                 question,
                 answers,
                 correctAnswer,
-                PIList
+                // PIList
             };
             questions.push(questionObj);
         }
@@ -228,7 +231,7 @@ function StudySetForm() {
                         <button type="submit" className="btn btn-primary m-1">Submit</button>
                         <button className="btn btn-success m-1" onClick={onAddQuestionBtnClick}>Add Question</button>
                     </div>
-                </div>                
+                </div>
             </form>
         </div>
     );
