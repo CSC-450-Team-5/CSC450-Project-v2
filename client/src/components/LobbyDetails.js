@@ -34,8 +34,8 @@ const HostLobby = () => {
                 throw new Error(response.statusText);
             }
             return response.json();
-        }).then((data) => {
-            console.log(data);
+        }).then(data => {
+            console.log('Got playerlist: ' + data);
             setPlayers(data);
         }).catch((error) => {
             console.error(error);
@@ -65,15 +65,11 @@ const HostLobby = () => {
                     <div className="row">
                         <div className="col-12">
                             <h2>Players:</h2>
-                            {players.length > 0 ? (
-                                <ul>
-                                    {players.map((player) => (
-                                        <li key={player.id}>{player.name}</li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <p>No players yet.</p>
-                            )}
+                            <ul>
+                                {players?.map((player) => (
+                                    <li key={player.id}>{player.name}</li>
+                                ))}
+                            </ul>
                         </div>
                     </div>
                 </div>
