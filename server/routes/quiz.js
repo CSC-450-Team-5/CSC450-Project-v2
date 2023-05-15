@@ -33,7 +33,7 @@ router.post('/get-player-list', (req, res) => {
     const lobbyId = req.body.lobbyId;
     const playerList = lobbyManager.getPlayerList(lobbyId);
     res.json(playerList);
-    console.log(res.json(playerList));
+    // console.log(res.json(playerList));
 });
 
 router.get('/get-lobby/:lobbyId', async (req, res) => {
@@ -67,7 +67,7 @@ router.post('/submit-quiz', async (req, res) => {
     }
 });
 
-router.get('/quiz/results/:resultId', async (req, res) => {
+router.get('/get-results/:resultId', async (req, res) => {
     const { resultId } = req.params;
     try {
         const quizResults = await CompletedQuiz.findById(resultId);
