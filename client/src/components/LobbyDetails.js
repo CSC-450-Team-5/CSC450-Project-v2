@@ -110,7 +110,7 @@ const PlayerLobby = () => {
             }, 1000);
         }
         return () => clearInterval(intervalId);
-    }, [currentQuestionIndex]);
+    }, [currentQuestionIndex, lobby, timeLimit, quizSubmitted]);
 
     useEffect(() => {
         if (
@@ -120,20 +120,16 @@ const PlayerLobby = () => {
         ) {
             handleSelectAnswer(currentQuestionIndex, -1);
         }
-    }, [timeRemaining]);
+    }, [currentQuestionIndex, lobby, quizSubmitted, timeRemaining]);
 
     function handleSelectAnswer(questionIndex, answerIndex) {
 
         console.log("handleSelectAnswer called", { questionIndex, answerIndex });
-        if (answerIndex === -1) {
-            // ran out of time
-            answerIndex = null;
-        }
         const answerObj = {
             userId: localStorage.getItem("userId"),
             questionIndex: questionIndex,
             answerIndex: answerIndex,
-            answer: lobby.quiz.questions[questionIndex].answers[answerIndex],
+            answer: answerIndex === -1 ? null : lobby.quiz.questions[questionIndex].answers[answerIndex],
             timeRemaining: timeRemaining,
         };
         setAnswers((prevAnswers) => {
@@ -174,7 +170,6 @@ const PlayerLobby = () => {
         );
     } else {
         var currentQuestion = lobby.quiz.questions[currentQuestionIndex];
-        console.log(currentQuestion);
         return (
             <>
                 <div className="text-white container">
