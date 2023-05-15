@@ -101,16 +101,16 @@ const PlayerLobby = () => {
         let intervalId;
         setTimeRemaining(timeLimit);
         intervalId = setInterval(() => {
-          setTimeRemaining((timeRemaining) => timeRemaining - 1);
+            setTimeRemaining((timeRemaining) => timeRemaining - 1);
         }, 1000);
         return () => clearInterval(intervalId);
-      }, [currentQuestionIndex, lobby, timeLimit]);
-      
-      useEffect(() => {
+    }, [currentQuestionIndex, lobby, timeLimit]);
+
+    useEffect(() => {
         if (timeRemaining <= 0 && !quizSubmitted) {
-          handleSelectAnswer(currentQuestionIndex, -1);
+            handleSelectAnswer(currentQuestionIndex, -1);
         }
-      }, [currentQuestionIndex, lobby, quizSubmitted, timeRemaining]);
+    }, [currentQuestionIndex, lobby, quizSubmitted, timeRemaining]);
 
     function handleSelectAnswer(questionIndex, answerIndex) {
 
@@ -163,17 +163,21 @@ const PlayerLobby = () => {
         return (
             <>
                 <div className="text-white container">
-                    <h1>{lobby.gameName}</h1>
+                    <h2>{lobby.game_name}</h2>
                     <div key={currentQuestionIndex}>
-                        <h3>Question {currentQuestionIndex + 1} <div className='float-right'>Seconds remaining: {timeRemaining}</div></h3>
-                        <p>{currentQuestion.question}</p>
-                        <div className="row">
-                            <button className="btn btn-primary col-6" onClick={() => handleSelectAnswer(currentQuestionIndex, 0)}>{currentQuestion.answers[0]}</button>
-                            <button className="btn btn-warning col-6" onClick={() => handleSelectAnswer(currentQuestionIndex, 1)}>{currentQuestion.answers[1]}</button>
+                        <h3 className='border rounded p-2'>Question {currentQuestionIndex + 1} <div className='float-end'>Seconds remaining: {timeRemaining}</div></h3>
+                        <h5 className='text-center'>{currentQuestion.question}</h5>
+                        <div className='row justify-content-center'>
+                            <div className="col-lg-6 col-md-12 d-flex flex-md-row flex-column justify-content-around">
+                                <button className="btn btn-primary" style={{ minHeight: 200, margin: 10, flex: 1 }} onClick={() => handleSelectAnswer(currentQuestionIndex, 0)}>{currentQuestion.answers[0]}</button>
+                                <button className="btn btn-warning" style={{ minHeight: 200, margin: 10, flex: 1 }} onClick={() => handleSelectAnswer(currentQuestionIndex, 1)}>{currentQuestion.answers[1]}</button>
+                            </div>
                         </div>
-                        <div className="row">
-                            <button className="btn btn-success col-6" onClick={() => handleSelectAnswer(currentQuestionIndex, 2)}>{currentQuestion.answers[2]}</button>
-                            <button className="btn btn-danger col-6" onClick={() => handleSelectAnswer(currentQuestionIndex, 3)}>{currentQuestion.answers[3]}</button>
+                        <div className='row justify-content-center'>
+                            <div className="col-lg-6 col-md-12 d-flex flex-md-row flex-column justify-content-around mb-3">
+                                <button className="btn btn-success" style={{ minHeight: 200, margin: 10, flex: 1 }} onClick={() => handleSelectAnswer(currentQuestionIndex, 2)}>{currentQuestion.answers[2]}</button>
+                                <button className="btn btn-danger" style={{ minHeight: 200, margin: 10, flex: 1 }} onClick={() => handleSelectAnswer(currentQuestionIndex, 3)}>{currentQuestion.answers[3]}</button>
+                            </div>
                         </div>
                     </div>
                 </div>
