@@ -78,8 +78,9 @@ class LobbyManager {
     }
 
     async getPlayerList(lobbyId) {
-        const lobby = await Lobby.findById(lobbyId);
-        return lobby.players;
+        const lobby = await this.getLobby(lobbyId);
+        // console.log("Found players: " + JSON.stringify(lobby.players));
+        return lobby;
     }
 
     async getLobby(lobbyId) {

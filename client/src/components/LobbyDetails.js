@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const HostLobby = () => {
-    const [players, setPlayers] = useState([]);
+    const [players, setPlayers] = useState(null);
     const { lobbyId } = useParams();
     const navigate = useNavigate();
     const [lobby, setLobby] = useState(null);
@@ -34,9 +34,9 @@ const HostLobby = () => {
                 throw new Error(response.statusText);
             }
             return response.json();
-        }).then((data) => {
-            console.log(data);
-            setPlayers(data);
+        }).then(data => {
+            console.log('Got playerlist: ' + data.players);
+            setPlayers(data.players);
         }).catch((error) => {
             console.error(error);
         });
@@ -65,15 +65,11 @@ const HostLobby = () => {
                     <div className="row">
                         <div className="col-12">
                             <h2>Players:</h2>
-                            {players.length > 0 ? (
-                                <ul>
-                                    {players.map((player) => (
-                                        <li key={player.id}>{player.name}</li>
-                                    ))}
-                                </ul>
-                            ) : (
-                                <p>No players yet.</p>
-                            )}
+                            <ul>
+                                {players?.map((player) => (
+                                    <li key={player.id}>{player.name}</li>
+                                ))}
+                            </ul>
                         </div>
                     </div>
                 </div>
