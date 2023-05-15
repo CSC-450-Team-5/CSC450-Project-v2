@@ -99,24 +99,18 @@ const PlayerLobby = () => {
 
     useEffect(() => {
         let intervalId;
-        if (currentQuestionIndex < lobby?.quiz?.questions?.length - 1) {
-            setTimeRemaining(timeLimit);
-            intervalId = setInterval(() => {
-                setTimeRemaining((timeRemaining) => timeRemaining - 1);
-            }, 1000);
-        }
+        setTimeRemaining(timeLimit);
+        intervalId = setInterval(() => {
+          setTimeRemaining((timeRemaining) => timeRemaining - 1);
+        }, 1000);
         return () => clearInterval(intervalId);
-    }, [currentQuestionIndex, lobby, timeLimit, quizSubmitted]);
-
-    useEffect(() => {
-        if (
-            timeRemaining <= 0 &&
-            currentQuestionIndex < lobby?.quiz?.questions?.length - 1 &&
-            !quizSubmitted
-        ) {
-            handleSelectAnswer(currentQuestionIndex, -1);
+      }, [currentQuestionIndex, lobby, timeLimit]);
+      
+      useEffect(() => {
+        if (timeRemaining <= 0 && !quizSubmitted) {
+          handleSelectAnswer(currentQuestionIndex, -1);
         }
-    }, [currentQuestionIndex, lobby, quizSubmitted, timeRemaining]);
+      }, [currentQuestionIndex, lobby, quizSubmitted, timeRemaining]);
 
     function handleSelectAnswer(questionIndex, answerIndex) {
 
